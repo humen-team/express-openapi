@@ -1,0 +1,37 @@
+{
+    "name": "@humen/express-openapi-rest",
+    "version": "1.1.0",
+    "description": "Opinionated REST APIs for express with OpenAPI support.",
+    "repository": "https://github.com/humen-team/express-openapi-rest",
+    "author": "Humen Team",
+    "license": "MIT",
+    "main": "src/index.js",
+    "scripts": {
+        "build": "babel src --out-dir lib --ignore '**/__tests__/*,**/__mocks__/*'",
+        "lint": "eslint src --cache",
+        "test": "jest"
+    },
+    "dependencies": {
+        "jsonschema": "^1.2.4"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/node": "^7.5.5",
+        "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+        "@babel/plugin-transform-runtime": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/runtime": "^7.5.5",
+        "babel-eslint": "^10.0.2",
+        "eslint": "^6.1.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-plugin-import": "^2.18.2",
+        "jest": "^24.8.0"
+    },
+    "jest": {
+        "modulePaths": [
+            "<rootDir>/src"
+        ],
+        "testRegex": "/__tests__/.*test\\.js$"
+    }
+}
