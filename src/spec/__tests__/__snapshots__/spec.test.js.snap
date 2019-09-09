@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spec build encodes a valid swagger 2.0 spec with no operations 1`] = `
+Object {
+  "basePath": "/",
+  "definitions": Object {},
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "paths": Object {},
+  "schemes": Array [
+    "http",
+  ],
+  "swagger": "2.0",
+}
+`;
+
+exports[`Spec build encodes a valid swagger 3.0 spec with no operations 1`] = `
+Object {
+  "components": Object {
+    "schemas": Object {},
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "openapi": "3.0.0",
+  "paths": Object {},
+  "servers": Array [
+    Object {
+      "url": "/",
+    },
+  ],
+}
+`;

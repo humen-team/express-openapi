@@ -33,7 +33,7 @@ validate.
 API; each of these operations defines enough information both to implement the API
 function and to generate an OpenAPI specification:
 
-    const create = new Create({
+    const create = new CreateOperation({
        // define a validator for the input
        input,
        // define a validator for the output
@@ -47,35 +47,8 @@ function and to generate an OpenAPI specification:
     // register the resource with express
     create.register(app);
 
-    // create an OpenAPI spec from a set of operations
-    const spec = buildSpec([
-        create,
-    ]);
-
     // serve an openapi spec
-    app.get('/openapi', (req, res) => res.status(200).send(spec) );
-
-
-## Builders
-
-Most of the time, a resource `foo` will have all (or at least most) of the standard REST
-operations. For convenience, `express-openapi-rest` provides builders to make constructing
-these operations simple:
-
-    const operations = Builder.crud({
-        // define an abstraction around persistence operations for `foo`
-        store,
-        // define the resource output type
-        resource,
-        // define the resource input types
-        input: {
-            create,
-            search,
-            update,
-        },
-    });
-
-    const spec = buildSpec(operations)
+    app.get('/openapi', serveSpec([create]));
 
 
 ## Resources
@@ -93,7 +66,9 @@ For example:
                  "type": "string"
             }
         },
-        "required": truea
+        "required": [
+            "bar",
+        ],
     }
 
 Because resources used for input and output can be very similar, `express-openapi-rest`

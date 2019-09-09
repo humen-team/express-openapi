@@ -1,0 +1,1186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app OpenAPI 2.0 returns 200 1`] = `
+Object {
+  "basePath": "/",
+  "definitions": Object {
+    "CommandInput": Object {
+      "properties": Object {
+        "request": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "request",
+      ],
+      "type": "object",
+    },
+    "CommandOutput": Object {
+      "properties": Object {
+        "response": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "response",
+      ],
+      "type": "object",
+    },
+    "CountFoo": Object {
+      "properties": Object {},
+      "type": "object",
+    },
+    "CreateFoo": Object {
+      "properties": Object {
+        "bar": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "bar",
+      ],
+      "type": "object",
+    },
+    "Error": Object {
+      "properties": Object {
+        "message": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "status": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+    },
+    "Foo": Object {
+      "properties": Object {
+        "bar": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "id": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "bar",
+        "id",
+      ],
+      "type": "object",
+    },
+    "FooFile": Object {
+      "properties": Object {
+        "id": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "id",
+      ],
+      "type": "object",
+    },
+    "FooList": Object {
+      "properties": Object {
+        "count": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "items": Object {
+          "items": Object {
+            "$ref": "#/definitions/Foo",
+          },
+          "type": "array",
+          "x-nullable": false,
+        },
+        "limit": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "offset": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "items",
+        "count",
+      ],
+      "type": "object",
+    },
+    "QueryOutput": Object {
+      "properties": Object {
+        "response": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "response",
+      ],
+      "type": "object",
+    },
+    "ReplaceFoo": Object {
+      "properties": Object {
+        "bar": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "bar",
+      ],
+      "type": "object",
+    },
+    "UpdateFoo": Object {
+      "properties": Object {
+        "bar": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "bar",
+      ],
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "paths": Object {
+    "/command": Object {
+      "post": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "mycommand",
+        "parameters": Array [
+          Object {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": Object {
+              "$ref": "#/definitions/CommandInput",
+            },
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "CommandOutput as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/CommandOutput",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+      },
+    },
+    "/foo": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [
+          Object {
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+          },
+          Object {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "FooList as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/FooList",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "head": Object {
+        "operationId": "count",
+        "parameters": Array [],
+        "responses": Object {
+          "204": Object {
+            "description": "Empty response",
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "post": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "create",
+        "parameters": Array [
+          Object {
+            "in": "body",
+            "name": "foo",
+            "required": true,
+            "schema": Object {
+              "$ref": "#/definitions/CreateFoo",
+            },
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "201": Object {
+            "description": "Foo as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/Foo",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+    },
+    "/foo/{fooId}": Object {
+      "delete": Object {
+        "operationId": "delete",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "responses": Object {
+          "204": Object {
+            "description": "Empty response",
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "get": Object {
+        "operationId": "retrieve",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "Foo as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/Foo",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "patch": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "update",
+        "parameters": Array [
+          Object {
+            "in": "body",
+            "name": "foo",
+            "required": true,
+            "schema": Object {
+              "$ref": "#/definitions/UpdateFoo",
+            },
+          },
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "Foo as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/Foo",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "put": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "replace",
+        "parameters": Array [
+          Object {
+            "in": "body",
+            "name": "foo",
+            "required": true,
+            "schema": Object {
+              "$ref": "#/definitions/ReplaceFoo",
+            },
+          },
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "Foo as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/Foo",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+    },
+    "/fooFile": Object {
+      "post": Object {
+        "operationId": "createfile",
+        "parameters": Array [],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "201": Object {
+            "description": "FooFile as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/FooFile",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+    },
+    "/fooFile/{fooFileId}": Object {
+      "get": Object {
+        "operationId": "retrievefile",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooFileId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "image/png",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "fooFile file content",
+            "schema": Object {
+              "type": "file",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+      "put": Object {
+        "operationId": "replacefile",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooFileId",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "FooFile as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/FooFile",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+    },
+    "/query": Object {
+      "get": Object {
+        "operationId": "myquery",
+        "parameters": Array [
+          Object {
+            "in": "query",
+            "name": "request",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "QueryOutput as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/QueryOutput",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+      },
+    },
+  },
+  "schemes": Array [
+    "http",
+  ],
+  "swagger": "2.0",
+}
+`;
+
+exports[`app OpenAPI 3.0.0 returns 200 1`] = `
+Object {
+  "components": Object {
+    "schemas": Object {
+      "CommandInput": Object {
+        "properties": Object {
+          "request": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "request",
+        ],
+        "type": "object",
+      },
+      "CommandOutput": Object {
+        "properties": Object {
+          "response": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "response",
+        ],
+        "type": "object",
+      },
+      "CountFoo": Object {
+        "properties": Object {},
+        "type": "object",
+      },
+      "CreateFoo": Object {
+        "properties": Object {
+          "bar": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "bar",
+        ],
+        "type": "object",
+      },
+      "Error": Object {
+        "properties": Object {
+          "message": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "status": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+      },
+      "Foo": Object {
+        "properties": Object {
+          "bar": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "id": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "bar",
+          "id",
+        ],
+        "type": "object",
+      },
+      "FooFile": Object {
+        "properties": Object {
+          "id": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "id",
+        ],
+        "type": "object",
+      },
+      "FooList": Object {
+        "properties": Object {
+          "count": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "items": Object {
+            "items": Object {
+              "$ref": "#/components/schemas/Foo",
+            },
+            "nullable": false,
+            "type": "array",
+          },
+          "limit": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "offset": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+        "required": Array [
+          "items",
+          "count",
+        ],
+        "type": "object",
+      },
+      "QueryOutput": Object {
+        "properties": Object {
+          "response": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "response",
+        ],
+        "type": "object",
+      },
+      "ReplaceFoo": Object {
+        "properties": Object {
+          "bar": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "bar",
+        ],
+        "type": "object",
+      },
+      "UpdateFoo": Object {
+        "properties": Object {
+          "bar": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "bar",
+        ],
+        "type": "object",
+      },
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "openapi": "3.0.0",
+  "paths": Object {
+    "/command": Object {
+      "post": Object {
+        "operationId": "mycommand",
+        "parameters": Array [],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/CommandInput",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/CommandOutput",
+                },
+              },
+            },
+            "description": "CommandOutput as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+      },
+    },
+    "/foo": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [
+          Object {
+            "in": "query",
+            "name": "offset",
+            "schema": Object {
+              "type": "integer",
+            },
+          },
+          Object {
+            "in": "query",
+            "name": "limit",
+            "schema": Object {
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/FooList",
+                },
+              },
+            },
+            "description": "FooList as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "head": Object {
+        "operationId": "count",
+        "parameters": Array [],
+        "responses": Object {
+          "204": Object {
+            "description": "Empty response",
+            "headers": Object {
+              "X-Total-Count": Object {
+                "schema": Object {
+                  "type": "integer",
+                },
+              },
+            },
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "post": Object {
+        "operationId": "create",
+        "parameters": Array [],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/CreateFoo",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": Object {
+          "201": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Foo",
+                },
+              },
+            },
+            "description": "Foo as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+    },
+    "/foo/{fooId}": Object {
+      "delete": Object {
+        "operationId": "delete",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "204": Object {
+            "description": "Empty response",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "get": Object {
+        "operationId": "retrieve",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Foo",
+                },
+              },
+            },
+            "description": "Foo as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "patch": Object {
+        "operationId": "update",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/UpdateFoo",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Foo",
+                },
+              },
+            },
+            "description": "Foo as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+      "put": Object {
+        "operationId": "replace",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/ReplaceFoo",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Foo",
+                },
+              },
+            },
+            "description": "Foo as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "foo",
+        ],
+      },
+    },
+    "/fooFile": Object {
+      "post": Object {
+        "operationId": "createfile",
+        "parameters": Array [],
+        "responses": Object {
+          "201": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/FooFile",
+                },
+              },
+            },
+            "description": "FooFile as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+    },
+    "/fooFile/{fooFileId}": Object {
+      "get": Object {
+        "operationId": "retrievefile",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooFileId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "image/png": Object {
+                "schema": Object {
+                  "format": "binary",
+                  "type": "string",
+                },
+              },
+            },
+            "description": "fooFile file content",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+      "put": Object {
+        "operationId": "replacefile",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "fooFileId",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/FooFile",
+                },
+              },
+            },
+            "description": "FooFile as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "fooFile",
+        ],
+      },
+    },
+    "/query": Object {
+      "get": Object {
+        "operationId": "myquery",
+        "parameters": Array [
+          Object {
+            "in": "query",
+            "name": "request",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/QueryOutput",
+                },
+              },
+            },
+            "description": "QueryOutput as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+      },
+    },
+  },
+  "servers": Array [
+    Object {
+      "url": "/",
+    },
+  ],
+}
+`;
