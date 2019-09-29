@@ -16,6 +16,7 @@ set of operations:
 
  - `GET    /foo`        - **search** within the collection of all `foo`
  - `POST   /foo`        - **create** a new instance within the collection of all `foo`
+ - `PUT    /foo/:fooId` - **replace** an instance of `foo`
  - `GET    /foo/:fooId` - **retrieve** an instance of `foo`
  - `PATCH  /foo/:fooId` - **update** an instance of `foo`
  - `DELETE /foo/:fooId` - **delete** an instance of `foo`
@@ -33,22 +34,22 @@ validate.
 API; each of these operations defines enough information both to implement the API
 function and to generate an OpenAPI specification:
 
-    const create = new CreateOperation({
+    const create = new Create({
        // define a validator for the input
        input,
        // define a validator for the output
        output,
-       // define a function that creates an output from an input
-       func,
+       // define a route function that creates an output from an input
+       route,
        // define the name of the resource
-       name,
+       resourceName,
     });
 
     // register the resource with express
     create.register(app);
 
     // serve an openapi spec
-    app.get('/openapi', serveSpec([create]));
+    app.get('/openapi', serveSpec({ operations: [create] }));
 
 
 ## Resources

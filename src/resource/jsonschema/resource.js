@@ -1,5 +1,11 @@
-import { difference, mapValues, omit } from 'lodash';
-import { validate } from 'jsonschema';
+import {
+    difference,
+    mapValues,
+    merge,
+    omit,
+    union,
+} from 'lodash';
+import { Validator } from 'jsonschema';
 
 import { UnprocessableEntity } from '../../errors';
 import Reference from '../reference';
@@ -13,6 +19,7 @@ export default class JSONSchemaResource extends Resource {
     constructor(schema, config) {
         super(config);
         this.schema = schema;
+        this.validator = new Validator();
     }
 
     get id() {
@@ -25,6 +32,10 @@ export default class JSONSchemaResource extends Resource {
 
     get required() {
         return this.schema.required;
+    }
+
+    get type() {
+        return this.schema.type;
     }
 
     get keys() {
@@ -48,6 +59,10 @@ export default class JSONSchemaResource extends Resource {
         };
     }
 
+    /* Convert this resource to an OpenAPI compatible definition.
+     *
+     * While OpenAPI leverages JSONSchema, it isn't 100% compatible; some conversion is required.
+     */
     cast(data) {
         return mapValues(
             data,
@@ -68,7 +83,7 @@ export default class JSONSchemaResource extends Resource {
     /* Validate data against this JSONSchema schema.
      */
     validate(data) {
-        const result = validate(data, this.schema);
+        const result = this.validator.validate(data, this.schema);
         if (result.errors.length) {
             // NB: we could report on mutiple errors
             const { instance, message } = result.errors[0];
@@ -81,12 +96,35 @@ export default class JSONSchemaResource extends Resource {
 
     /* Remove some properties from a resource.
      */
-    without(id, ignore) {
+    omit(options = {}) {
+        const { id = this.id, properties = [] } = options;
         return new JSONSchemaResource({
             id,
             type: 'object',
-            properties: omit(this.properties, ignore),
-            required: difference(this.required, ignore),
+            properties: omit(this.properties, properties),
+            required: difference(this.required, properties),
         });
+    }
+
+    /* Add some properties to a resource.
+     */
+    merge(options = {}) {
+        const { id = this.id, properties = {}, required = [] } = options;
+        return new JSONSchemaResource({
+            id,
+            type: 'object',
+            properties: merge(properties, this.properties),
+            required: union(required, this.required),
+        });
+    }
+
+    /* Add another schema to the validator.
+     */
+    addSchemaReference({ $ref, schema }) {
+        this.validator.addSchema({
+            ...schema,
+            id: `${this.id}${$ref}`,
+        });
+        return this;
     }
 }

@@ -19,9 +19,18 @@ export const Foo = new JSONSchemaResource({
 
 export const FooList = Foo.toList();
 
-export const CreateFoo = Foo.without('CreateFoo', ['id']);
-export const ReplaceFoo = Foo.without('ReplaceFoo', ['id']);
-export const UpdateFoo = Foo.without('UpdateFoo', ['id']);
+export const CreateFoo = Foo.omit({
+    id: 'CreateFoo',
+    properties: ['id'],
+});
+export const ReplaceFoo = Foo.omit({
+    id: 'ReplaceFoo',
+    properties: ['id'],
+});
+export const UpdateFoo = Foo.omit({
+    id: 'UpdateFoo',
+    properties: ['id'],
+});
 
 export const CountFoo = new JSONSchemaResource({
     id: 'CountFoo',
