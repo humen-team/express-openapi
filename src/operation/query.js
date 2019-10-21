@@ -7,7 +7,7 @@ import Operation from './operation';
 export default class Query extends Operation {
     constructor(options) {
         super({
-            method: 'get',
+            method: 'GET',
             ...options,
         });
     }

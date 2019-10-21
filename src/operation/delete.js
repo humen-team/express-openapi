@@ -9,7 +9,7 @@ import InstanceOperation from './instance';
 export default class Delete extends InstanceOperation {
     constructor(options) {
         super({
-            method: 'delete',
+            method: 'DELETE',
             statusCode: NO_CONTENT,
             ...options,
         });

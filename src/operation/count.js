@@ -10,7 +10,7 @@ import { ExtendedHandler } from '../handler';
 export default class Count extends CollectionOperation {
     constructor(options = {}) {
         super({
-            method: 'head',
+            method: 'HEAD',
             statusCode: NO_CONTENT,
             ...options,
         });

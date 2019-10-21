@@ -1,24 +1,35 @@
 import {
     difference,
+    has,
+    intersection,
+    isUndefined,
     mapValues,
     merge,
     omit,
+    pick,
     union,
 } from 'lodash';
 import { Validator } from 'jsonschema';
 
-import { UnprocessableEntity } from '../../errors';
+import UnprocessableEntity from '../../errors/unprocessable_entity';
 import Reference from '../reference';
 import Resource from '../resource';
 import { buildProperty } from './property';
-import castType from './types';
+import { castInputValue, castOutputValue } from './types';
 
 /* Defines an OpenAPI compatible resource using JSONSchema.
  */
 export default class JSONSchemaResource extends Resource {
     constructor(schema, config) {
         super(config);
-        this.schema = schema;
+        // default to stricter validation
+        const { additionalProperties } = schema;
+        this.schema = {
+            additionalProperties: additionalProperties === undefined
+                ? false
+                : additionalProperties,
+            ...schema,
+        };
         this.validator = new Validator();
     }
 
@@ -59,16 +70,32 @@ export default class JSONSchemaResource extends Resource {
         };
     }
 
-    /* Convert this resource to an OpenAPI compatible definition.
-     *
-     * While OpenAPI leverages JSONSchema, it isn't 100% compatible; some conversion is required.
+    /* Convert JSON data to this resource's expected types.
      */
-    cast(data) {
+    castInput(data) {
         return mapValues(
             data,
-            (value, key) => castType(value, this.schema.properties[key].type),
+            (value, key) => (
+                has(this.properties, key)
+                    ? castInputValue(value, this.properties[key].type)
+                    : undefined
+            ),
         );
     }
+
+    /* Convert this resource's data to JSON types.
+     */
+    castOutput(data) {
+        return mapValues(
+            data,
+            (value, key) => (
+                has(this.properties, key)
+                    ? castOutputValue(value, this.schema.properties[key].type)
+                    : undefined
+            ),
+        );
+    }
+
 
     toList() {
         // avoid circular dependency by deferring import
@@ -86,36 +113,84 @@ export default class JSONSchemaResource extends Resource {
         const result = this.validator.validate(data, this.schema);
         if (result.errors.length) {
             // NB: we could report on mutiple errors
-            const { instance, message } = result.errors[0];
+            const { property, message } = result.errors[0];
             throw new UnprocessableEntity({
-                message: `${instance} ${message}`,
+                message: `${property} ${message}`,
             });
         }
         return data;
     }
 
-    /* Remove some properties from a resource.
+    /* Create a resource, requiring all properties.
      */
-    omit(options = {}) {
-        const { id = this.id, properties = [] } = options;
+    static all(options = {}) {
+        const { id = this.id, properties = {} } = options;
         return new JSONSchemaResource({
             id,
-            type: 'object',
-            properties: omit(this.properties, properties),
-            required: difference(this.required, properties),
+            properties,
+            required: Object.keys(properties),
         });
     }
 
     /* Add some properties to a resource.
      */
     merge(options = {}) {
-        const { id = this.id, properties = {}, required = [] } = options;
+        const {
+            id = this.id,
+            properties = {},
+            required = [],
+        } = options;
         return new JSONSchemaResource({
             id,
             type: 'object',
             properties: merge(properties, this.properties),
             required: union(required, this.required),
         });
+    }
+
+    /* Remove some properties from a resource.
+     */
+    omit(options = {}) {
+        const {
+            id = this.id,
+            properties = [],
+            required,
+        } = options;
+        return new JSONSchemaResource({
+            id,
+            type: 'object',
+            properties: omit(this.properties, properties),
+            required: required || difference(this.required, properties),
+        });
+    }
+
+    /* Pick some properties from a resource.
+     */
+    pick(options = {}) {
+        const {
+            id = this.id,
+            properties = [],
+            required,
+        } = options;
+        return new JSONSchemaResource({
+            id,
+            type: 'object',
+            properties: pick(this.properties, properties),
+            required: isUndefined(required) ? intersection(this.required, properties) : required,
+        });
+    }
+
+    /* Add internal definitions.
+     */
+    addDefinitions({ definitions }) {
+        // XXX make definition management nicer
+        this.schema.definitions = {};
+        definitions.forEach(
+            (definition) => {
+                this.schema.definitions[definition.id] = definition;
+            },
+        );
+        return this;
     }
 
     /* Add another schema to the validator.

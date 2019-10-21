@@ -10,7 +10,7 @@ import CollectionOperation from './collection';
 export default class Create extends CollectionOperation {
     constructor(options) {
         super({
-            method: 'post',
+            method: 'POST',
             statusCode: CREATED,
             ...options,
         });

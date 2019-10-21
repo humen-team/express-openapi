@@ -17,9 +17,15 @@ export default class Resource {
         throw new Error(`Resource.build() not implemented for OpenAPI version: ${openapiVersion}`);
     }
 
-    /* Cast string-valued data to this resource's expected types.
+    /* Cast JSON data to this resource's expected types.
      */
-    cast(data) { // eslint-disable-line class-methods-use-this
+    castInput(data) { // eslint-disable-line class-methods-use-this
+        return data;
+    }
+
+    /* Cast this resource's expected types to JSON.
+     */
+    castOutput(data) { // eslint-disable-line class-methods-use-this
         return data;
     }
 

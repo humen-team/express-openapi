@@ -11,7 +11,7 @@ import { UploadHandler } from '../handler';
 export default class CreateFile extends CollectionOperation {
     constructor(options) {
         super({
-            method: 'post',
+            method: 'POST',
             consumes: 'multipart/form-data',
             statusCode: CREATED,
             ...options,

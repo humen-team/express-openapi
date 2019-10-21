@@ -1,3 +1,5 @@
+import { snakeCase } from 'lodash';
+
 import Operation from './operation';
 import Parameter from './parameter';
 
@@ -7,10 +9,14 @@ import Parameter from './parameter';
  * That is, it operates on a single instance of `foo` via the path `/foo/:fooId`.
  */
 export default class InstanceOperation extends Operation {
-    constructor({ resourceName, ...more }) {
+    constructor({ resourceName, suffix, ...more }) {
         const identifierName = `${resourceName}Id`;
+        let path = `/${snakeCase(resourceName)}/:${identifierName}`;
+        if (suffix) {
+            path = `${path}/${suffix}`;
+        }
         super({
-            path: `/${resourceName}/:${identifierName}`,
+            path,
             tags: [
                 resourceName,
             ],

@@ -9,7 +9,7 @@ describe('app', () => {
         it('returns 204', async () => {
             const app = createApp();
             const response = await request(app)
-                .post('/fooFile')
+                .post('/foo_file')
                 .attach('fooFile', 'src/__tests__/assets/1x1.png');
             expect(response.statusCode).toEqual(201);
             expect(response.body).toEqual({
@@ -22,7 +22,7 @@ describe('app', () => {
         it('returns 204', async () => {
             const app = createApp();
             const response = await request(app)
-                .put('/fooFile/id')
+                .put('/foo_file/id')
                 .attach('fooFile', 'src/__tests__/assets/1x1.png');
             expect(response.statusCode).toEqual(200);
             expect(response.body).toEqual({
@@ -37,7 +37,7 @@ describe('app', () => {
 
             const app = createApp();
             const response = await request(app)
-                .get('/fooFile/id');
+                .get('/foo_file/id');
 
             expect(response.statusCode).toEqual(200);
             expect(response.headers['content-type']).toEqual('image/png');

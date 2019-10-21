@@ -7,7 +7,7 @@ import Operation from './operation';
 export default class Command extends Operation {
     constructor(options) {
         super({
-            method: 'post',
+            method: 'POST',
             ...options,
         });
     }

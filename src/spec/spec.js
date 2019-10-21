@@ -72,7 +72,7 @@ export default class Spec {
             {},
             ...concat(
                 this.operations.filter(
-                    ({ input, method }) => !!input && method !== 'get',
+                    ({ input, method }) => !!input && method !== 'GET',
                 ).map(
                     ({ input }) => ({
                         [input.id]: input.build(openapiVersion),
@@ -108,7 +108,7 @@ export default class Spec {
             ...this.operations.map(
                 (operation) => ({
                     [normalizePath(operation.path)]: {
-                        [operation.method]: operation.build(openapiVersion),
+                        [operation.method.toLowerCase()]: operation.build(openapiVersion),
                     },
                 }),
             ),

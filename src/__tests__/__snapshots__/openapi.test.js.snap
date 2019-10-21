@@ -424,7 +424,7 @@ Object {
         ],
       },
     },
-    "/fooFile": Object {
+    "/foo_file": Object {
       "post": Object {
         "operationId": "createfile",
         "parameters": Array [],
@@ -450,7 +450,7 @@ Object {
         ],
       },
     },
-    "/fooFile/{fooFileId}": Object {
+    "/foo_file/{fooFileId}": Object {
       "get": Object {
         "operationId": "retrievefile",
         "parameters": Array [
@@ -1029,7 +1029,7 @@ Object {
         ],
       },
     },
-    "/fooFile": Object {
+    "/foo_file": Object {
       "post": Object {
         "operationId": "createfile",
         "parameters": Array [],
@@ -1060,7 +1060,7 @@ Object {
         ],
       },
     },
-    "/fooFile/{fooFileId}": Object {
+    "/foo_file/{fooFileId}": Object {
       "get": Object {
         "operationId": "retrievefile",
         "parameters": Array [

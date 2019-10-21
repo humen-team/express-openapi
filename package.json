@@ -5,7 +5,7 @@
     "repository": "https://github.com/humen-team/express-openapi-rest",
     "author": "Humen Team",
     "license": "MIT",
-    "main": "src/index.js",
+    "main": "lib/index.js",
     "scripts": {
         "build": "babel src --out-dir lib --ignore '**/__tests__/*,**/__mocks__/*'",
         "lint": "eslint src --cache",

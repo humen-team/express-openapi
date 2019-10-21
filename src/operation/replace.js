@@ -7,7 +7,7 @@ import InstanceOperation from './instance';
 export default class ReplaceOperation extends InstanceOperation {
     constructor(options) {
         super({
-            method: 'put',
+            method: 'PUT',
             ...options,
         });
     }

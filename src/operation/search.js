@@ -8,7 +8,7 @@ import CollectionOperation from './collection';
 export default class Search extends CollectionOperation {
     constructor(options = {}) {
         super({
-            method: 'get',
+            method: 'GET',
             ...options,
         });
     }

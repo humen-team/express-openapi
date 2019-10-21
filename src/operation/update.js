@@ -8,7 +8,7 @@ import InstanceOperation from './instance';
 export default class Update extends InstanceOperation {
     constructor(options) {
         super({
-            method: 'patch',
+            method: 'PATCH',
             ...options,
         });
     }

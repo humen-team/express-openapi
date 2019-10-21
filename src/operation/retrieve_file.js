@@ -12,7 +12,7 @@ import { DownloadHandler } from '../handler';
 export default class RetrieveFileOperation extends InstanceOperation {
     constructor({ produces, ...options }) {
         super({
-            method: 'get',
+            method: 'GET',
             produces: produces || BINARY_MIMETYPE,
             ...options,
         });

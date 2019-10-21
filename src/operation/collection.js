@@ -1,3 +1,5 @@
+import { snakeCase } from 'lodash';
+
 import Operation from './operation';
 
 /* A `CollectionOperation` encapsulates a REST-oriented route that operates
@@ -8,7 +10,7 @@ import Operation from './operation';
 export default class CollectionOperation extends Operation {
     constructor({ resourceName, ...more }) {
         super({
-            path: `/${resourceName}`,
+            path: `/${snakeCase(resourceName)}`,
             tags: [
                 resourceName,
             ],

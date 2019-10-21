@@ -7,7 +7,7 @@ import InstanceOperation from './instance';
 export default class RetrieveOperation extends InstanceOperation {
     constructor(options) {
         super({
-            method: 'get',
+            method: 'GET',
             ...options,
         });
     }

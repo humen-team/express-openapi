@@ -9,7 +9,7 @@ import { UploadHandler } from '../handler';
 export default class ReplaceFileOperation extends InstanceOperation {
     constructor(options) {
         super({
-            method: 'put',
+            method: 'PUT',
             consumes: 'multipart/form-data',
             ...options,
         });

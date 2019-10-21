@@ -57,7 +57,7 @@ export default class Operation {
      */
     register(app) {
         const handler = this.constructor.createHandler(this);
-        app[this.method](this.path, handler.handle.bind(handler));
+        app[this.method.toLowerCase()](this.path, handler.handle.bind(handler));
     }
 
     /* Define the default operation id.
@@ -87,7 +87,7 @@ export default class Operation {
     /* Does this operation expect a request body?
      */
     get hasRequestBody() {
-        return this.input && this.method !== 'get' && this.method !== 'head';
+        return this.input && this.method !== 'GET' && this.method !== 'HEAD';
     }
 
     /* Does this operation expect a response body?

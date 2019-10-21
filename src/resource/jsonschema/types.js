@@ -1,6 +1,6 @@
-/* Cast a string value to a JSON Schema primitive type.
+/* Cast a JSON value to a JSON Schema primitive type.
  */
-export default function castType(value, type) {
+export function castInputValue(value, type) {
     if (type === 'integer' || type === 'long') {
         return parseInt(value, 10);
     }
@@ -18,6 +18,15 @@ export default function castType(value, type) {
     }
     if (type === 'binary') {
         return Buffer.from(value, 'binary');
+    }
+    return value;
+}
+
+/* Cast a value to JSON.
+ */
+export function castOutputValue(value) {
+    if (value instanceof Date) {
+        return value.toISOString();
     }
     return value;
 }

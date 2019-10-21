@@ -1,5 +1,4 @@
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
-import { cast, validate } from './types';
 
 import { InternalServerError } from '../errors';
 
@@ -45,11 +44,9 @@ export default class Handler {
             return null;
         }
 
-        if (this.hasRequestBody) {
-            return validate(req.body, this.input);
-        }
-
-        return validate(cast(req.query, this.input), this.input);
+        const input = this.hasRequestBody ? req.body : req.query;
+        const convertedInput = this.input.castInput(input);
+        return this.input.validate(convertedInput);
     }
 
     /* Process, validate, and send response output.
@@ -59,9 +56,10 @@ export default class Handler {
             return res.status(this.statusCode).send();
         }
 
+        const convertedOutput = this.output.castOutput(output);
         let resource;
         try {
-            resource = validate(output, this.output);
+            resource = this.output.validate(convertedOutput);
         } catch (error) {
             // a validation failure on output is not the requester's fault
             throw new InternalServerError({
@@ -75,7 +73,11 @@ export default class Handler {
      */
     async processError(error, req, res) {
         const status = error.status || INTERNAL_SERVER_ERROR;
-        const resource = validate(cast(error, this.error), this.error);
+        const convertedError = this.error.castOutput({
+            message: error.message || 'Error',
+            ...error,
+        });
+        const resource = this.error.validate(convertedError);
         return res.status(status).send(resource);
     }
 

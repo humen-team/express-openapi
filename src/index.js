@@ -1,9 +1,20 @@
 import {
+    Accepted,
+    Conflict,
+    Forbidden,
+    HttpError,
+    InternalServerError,
+    NotFound,
+    Unauthorized,
+} from './errors';
+import {
     Command,
     Create,
     CreateFile,
+    CreateFor,
     Count,
     Delete,
+    DeleteMany,
     Replace,
     ReplaceFile,
     Retrieve,
@@ -13,15 +24,28 @@ import {
     Update,
 } from './operation';
 import { JSONSchemaResource } from './resource';
-import { buildSpec, serveSpec } from './spec';
+import {
+    Info,
+    buildSpec,
+    serveSpec,
+} from './spec';
 
 export {
+    Accepted,
+    Conflict,
     Command,
     Create,
     CreateFile,
+    CreateFor,
     Count,
     Delete,
+    DeleteMany,
+    Forbidden,
+    HttpError,
+    Info,
+    InternalServerError,
     JSONSchemaResource,
+    NotFound,
     Query,
     Replace,
     ReplaceFile,
@@ -29,6 +53,7 @@ export {
     RetrieveFile,
     Search,
     Update,
+    Unauthorized,
     buildSpec,
     serveSpec,
 };
