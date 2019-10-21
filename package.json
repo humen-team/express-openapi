@@ -1,13 +1,13 @@
 {
-    "name": "@humen.ai/express-openapi-rest",
-    "version": "0.1.0",
+    "name": "@humen-team/express-openapi",
+    "version": "0.1.2",
     "description": "Opinionated REST APIs for express with OpenAPI support.",
-    "repository": "https://github.com/humen-team/express-openapi-rest",
+    "repository": "https://github.com/humen-team/express-openapi",
     "author": "Humen Team",
     "license": "MIT",
     "main": "lib/index.js",
     "scripts": {
-        "build": "babel src --out-dir lib --ignore '**/__tests__/*,**/__mocks__/*'",
+        "prepublish": "rm -rf lib && babel src --out-dir lib --ignore '**/__tests__/*,**/__mocks__/*'",
         "lint": "eslint src --cache",
         "test": "jest",
         "test:start": "babel-node ./src/__tests__/app.js"

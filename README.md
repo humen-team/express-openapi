@@ -5,7 +5,7 @@ Opinionated REST APIs for `express` with `OpenAPI` support.
 [OpenAPI](https://swagger.io/docs/specification/about/) (aka Swagger) is a widely used,
 standards-based protocol for documenting HTTP-based APIs. A common challenge with OpenAPI
 and related standards is that the documentation can diverge from the implementation.
-`express-openapi-rest` addresses this problem by defining a *single source of truth* for
+`express-openapi` addresses this problem by defining a *single source of truth* for
 both API implementations and documentation.
 
 
@@ -30,7 +30,7 @@ validate.
 
 ## Usage
 
-`express-openapi-rest` defines concrete `Operation` classes for each standard RESTful
+`express-openapi` defines concrete `Operation` classes for each standard RESTful
 API; each of these operations defines enough information both to implement the API
 function and to generate an OpenAPI specification:
 
@@ -72,6 +72,6 @@ For example:
         ],
     }
 
-Because resources used for input and output can be very similar, `express-openapi-rest`
+Because resources used for input and output can be very similar, `express-openapi`
 also provides several utilities for building such resources from a common set of
 properties.
