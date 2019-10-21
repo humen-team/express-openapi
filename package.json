@@ -1,6 +1,6 @@
 {
     "name": "@humen/express-openapi-rest",
-    "version": "1.1.0",
+    "version": "0.1.0",
     "description": "Opinionated REST APIs for express with OpenAPI support.",
     "repository": "https://github.com/humen-team/express-openapi-rest",
     "author": "Humen Team",
