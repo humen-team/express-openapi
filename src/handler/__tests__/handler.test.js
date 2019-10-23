@@ -8,6 +8,17 @@ describe('handler', () => {
             flag: {
                 type: 'boolean',
             },
+            items: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        id: {
+                            type: 'string',
+                        },
+                    },
+                },
+            },
         },
         required: [
             'flag',
@@ -114,10 +125,22 @@ describe('handler', () => {
             const output = {
                 flag: true,
                 foo: 'bar',
+                items: [
+                    {
+                        name: 'name',
+                        // XXX TODO: fix resource castOutput
+                        bar: undefined,
+                    },
+                ],
             };
             const result = handler.processOutputData(output);
             expect(result).toEqual({
                 flag: true,
+                items: [
+                    {
+                        name: 'name',
+                    },
+                ],
             });
         });
     });

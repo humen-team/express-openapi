@@ -1,6 +1,5 @@
 import {
     difference,
-    has,
     intersection,
     isUndefined,
     mapValues,
@@ -16,6 +15,32 @@ import Reference from '../reference';
 import Resource from '../resource';
 import { buildProperty } from './property';
 import { castInputValue, castOutputValue } from './types';
+
+function deepCast(object, properties, cast) {
+    return mapValues(
+        object,
+        (value, key) => {
+            const property = properties[key];
+            if (!property) {
+                return undefined;
+            }
+
+            /*
+            if (property.type === 'array') {
+                return value.map(
+                    (item) => deepCast(item, property.items, cast),
+                );
+            }
+
+            if (property.type === 'object') {
+                return deepCast(value, property, cast);
+            }
+            */
+
+            return cast(value, property);
+        },
+    );
+}
 
 /* Defines an OpenAPI compatible resource using JSONSchema.
  */
@@ -72,30 +97,15 @@ export default class JSONSchemaResource extends Resource {
 
     /* Convert JSON data to this resource's expected types.
      */
-    castInput(data) {
-        return mapValues(
-            data,
-            (value, key) => (
-                has(this.properties, key)
-                    ? castInputValue(value, this.properties[key])
-                    : undefined
-            ),
-        );
+    castInput(input) {
+        return deepCast(input, this.properties, castInputValue);
     }
 
     /* Convert this resource's data to JSON types.
      */
-    castOutput(data) {
-        return mapValues(
-            data,
-            (value, key) => (
-                has(this.properties, key)
-                    ? castOutputValue(value, this.schema.properties[key])
-                    : undefined
-            ),
-        );
+    castOutput(output) {
+        return deepCast(output, this.properties, castOutputValue);
     }
-
 
     toList() {
         // avoid circular dependency by deferring import

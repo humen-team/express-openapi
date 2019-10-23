@@ -1,7 +1,30 @@
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
-import { isUndefined, omitBy } from 'lodash';
+import { isUndefined, mapValues, omitBy } from 'lodash';
 
 import { InternalServerError } from '../errors';
+
+/* Recursively omit undefined.
+ */
+function deepOmitUndefined(object) {
+    if (Array.isArray(object)) {
+        return object.map(
+            (item) => deepOmitUndefined(item),
+        );
+    }
+
+    return omitBy(
+        mapValues(
+            object,
+            (value) => (
+                typeof value === 'object'
+                    ? deepOmitUndefined(value)
+                    : value
+            ),
+        ),
+        isUndefined,
+    );
+}
+
 
 /* Encapsulates executation of a route.
  */
@@ -66,10 +89,8 @@ export default class Handler {
     }
 
     processOutputData(output) {
-        const convertedOutput = omitBy(
-            this.output.castOutput(output),
-            isUndefined,
-        );
+        const convertedOutput = deepOmitUndefined(this.output.castOutput(output));
+
         try {
             return this.output.validate(convertedOutput);
         } catch (error) {
