@@ -3,7 +3,7 @@ import { JSONSchemaResource, InternalServerError, UnprocessableEntity } from '..
 
 describe('handler', () => {
     const schema = new JSONSchemaResource({
-        id: 'resource',
+        id: 'Resource',
         properties: {
             flag: {
                 type: 'boolean',
@@ -23,6 +23,17 @@ describe('handler', () => {
         required: [
             'flag',
         ],
+    });
+    const error = new JSONSchemaResource({
+        id: 'Error',
+        properties: {
+            message: {
+                type: 'string',
+            },
+            status: {
+                type: 'integer',
+            },
+        },
     });
 
     describe('processInput', () => {
@@ -69,10 +80,10 @@ describe('handler', () => {
             const handler = new Handler({
                 input: schema,
             });
-            const input = {
+            const data = {
                 flag: true,
             };
-            const result = handler.processInputData(input);
+            const result = handler.processInputData(data);
             expect(result).toEqual({
                 flag: true,
             });
@@ -81,19 +92,19 @@ describe('handler', () => {
             const handler = new Handler({
                 input: schema,
             });
-            const input = {
+            const data = {
             };
-            await expect(() => handler.processInputData(input)).toThrow(UnprocessableEntity);
+            await expect(() => handler.processInputData(data)).toThrow(UnprocessableEntity);
         });
         it('validates unexpected attributes', async () => {
             const handler = new Handler({
                 input: schema,
             });
-            const input = {
+            const data = {
                 flag: false,
                 foo: 'bar',
             };
-            await expect(() => handler.processInputData(input)).toThrow(UnprocessableEntity);
+            await expect(() => handler.processInputData(data)).toThrow(UnprocessableEntity);
         });
     });
 
@@ -102,10 +113,10 @@ describe('handler', () => {
             const handler = new Handler({
                 output: schema,
             });
-            const output = {
+            const data = {
                 flag: true,
             };
-            const result = handler.processOutputData(output);
+            const result = handler.processOutputData(data);
             expect(result).toEqual({
                 flag: true,
             });
@@ -114,15 +125,15 @@ describe('handler', () => {
             const handler = new Handler({
                 output: schema,
             });
-            const output = {
+            const data = {
             };
-            expect(() => handler.processOutputData(output)).toThrow(InternalServerError);
+            expect(() => handler.processOutputData(data)).toThrow(InternalServerError);
         });
         it('ignores unmapped properties', async () => {
             const handler = new Handler({
                 output: schema,
             });
-            const output = {
+            const data = {
                 flag: true,
                 foo: 'bar',
                 items: [
@@ -133,7 +144,7 @@ describe('handler', () => {
                     },
                 ],
             };
-            const result = handler.processOutputData(output);
+            const result = handler.processOutputData(data);
             expect(result).toEqual({
                 flag: true,
                 items: [
@@ -141,6 +152,21 @@ describe('handler', () => {
                         name: 'name',
                     },
                 ],
+            });
+        });
+    });
+    describe('processErrorData', () => {
+        it('processes the error data', () => {
+            const handler = new Handler({
+                error,
+            });
+            const data = {
+                message: 'an error',
+                extra: 'ignore me',
+            };
+            const result = handler.processErrorData(data);
+            expect(result).toEqual({
+                message: 'an error',
             });
         });
     });

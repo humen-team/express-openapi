@@ -104,13 +104,23 @@ export default class Handler {
     /* Process, validate, and send response errors.
      */
     async processError(error, req, res) {
-        const status = error.status || INTERNAL_SERVER_ERROR;
-        const convertedError = this.error.castOutput({
-            message: error.message || 'Error',
-            ...error,
-        });
-        const resource = this.error.validate(convertedError);
+        const status = this.processErrorStatus(error);
+        const resource = this.processErrorData(error);
         return res.status(status).send(resource);
+    }
+
+    processErrorStatus(error) { // eslint-disable-line class-methods-use-this
+        return error.status || INTERNAL_SERVER_ERROR;
+    }
+
+    processErrorData(error) {
+        const convertedError = deepOmitUndefined(
+            this.error.castOutput({
+                message: error.message || 'Error',
+                ...error,
+            }),
+        );
+        return this.error.validate(convertedError);
     }
 
     /* Invoke a route function.
