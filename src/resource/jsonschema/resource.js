@@ -77,7 +77,7 @@ export default class JSONSchemaResource extends Resource {
             data,
             (value, key) => (
                 has(this.properties, key)
-                    ? castInputValue(value, this.properties[key].type)
+                    ? castInputValue(value, this.properties[key])
                     : undefined
             ),
         );
@@ -90,7 +90,7 @@ export default class JSONSchemaResource extends Resource {
             data,
             (value, key) => (
                 has(this.properties, key)
-                    ? castOutputValue(value, this.schema.properties[key].type)
+                    ? castOutputValue(value, this.schema.properties[key])
                     : undefined
             ),
         );

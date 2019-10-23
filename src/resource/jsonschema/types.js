@@ -1,6 +1,8 @@
 /* Cast a JSON value to a JSON Schema primitive type.
  */
-export function castInputValue(value, type) {
+export function castInputValue(value, property) {
+    const { format, type } = property;
+
     if (type === 'integer' || type === 'long') {
         return parseInt(value, 10);
     }
@@ -11,6 +13,9 @@ export function castInputValue(value, type) {
         return value.toLowerCase() === 'true' || value === '1';
     }
     if (type === 'date' || type === 'dateTime') {
+        return new Date(value);
+    }
+    if (type === 'string' && (format === 'date' || format === 'date-time')) {
         return new Date(value);
     }
     if (type === 'byte') {
