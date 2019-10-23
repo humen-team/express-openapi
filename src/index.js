@@ -6,6 +6,7 @@ import {
     InternalServerError,
     NotFound,
     Unauthorized,
+    UnprocessableEntity,
 } from './errors';
 import {
     Command,
@@ -54,6 +55,7 @@ export {
     Search,
     Update,
     Unauthorized,
+    UnprocessableEntity,
     buildSpec,
     serveSpec,
 };

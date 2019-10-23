@@ -1,4 +1,5 @@
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { isUndefined, omitBy } from 'lodash';
 
 import { InternalServerError } from '../errors';
 
@@ -45,6 +46,10 @@ export default class Handler {
         }
 
         const input = this.hasRequestBody ? req.body : req.query;
+        return this.processInputData(input);
+    }
+
+    processInputData(input) {
         const convertedInput = this.input.castInput(input);
         return this.input.validate(convertedInput);
     }
@@ -52,21 +57,27 @@ export default class Handler {
     /* Process, validate, and send response output.
      */
     async processOutput(output, req, res) {
-        if (!this.hasResponseBody) {
+        if (!this.output || !this.hasResponseBody) {
             return res.status(this.statusCode).send();
         }
 
-        const convertedOutput = this.output.castOutput(output);
-        let resource;
+        const resource = await this.processOutputData(output);
+        return res.status(this.statusCode).send(resource);
+    }
+
+    processOutputData(output) {
+        const convertedOutput = omitBy(
+            this.output.castOutput(output),
+            isUndefined,
+        );
         try {
-            resource = this.output.validate(convertedOutput);
+            return this.output.validate(convertedOutput);
         } catch (error) {
             // a validation failure on output is not the requester's fault
             throw new InternalServerError({
                 message: error.message,
             });
         }
-        return res.status(this.statusCode).send(resource);
     }
 
     /* Process, validate, and send response errors.

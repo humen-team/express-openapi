@@ -5,6 +5,7 @@ import HttpError from './base';
 import InternalServerError from './internal_server_error';
 import NotFound from './not_found';
 import Unauthorized from './unauthorized';
+import UnprocessableEntity from './unprocessable_entity';
 
 export {
     Accepted,
@@ -14,4 +15,5 @@ export {
     InternalServerError,
     NotFound,
     Unauthorized,
+    UnprocessableEntity,
 };

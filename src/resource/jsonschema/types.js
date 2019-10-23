@@ -10,6 +10,9 @@ export function castInputValue(value, property) {
         return parseFloat(value);
     }
     if (type === 'boolean') {
+        if (typeof value === 'boolean') {
+            return value;
+        }
         return value.toLowerCase() === 'true' || value === '1';
     }
     if (type === 'date' || type === 'dateTime') {
