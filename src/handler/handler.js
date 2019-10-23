@@ -1,5 +1,5 @@
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
-import { isUndefined, mapValues, omitBy } from 'lodash';
+import { isPlainObject, isUndefined, mapValues, omitBy } from 'lodash';
 
 import { InternalServerError } from '../errors';
 
@@ -16,7 +16,7 @@ function deepOmitUndefined(object) {
         mapValues(
             object,
             (value) => (
-                value && typeof value === 'object'
+                isPlainObject(value)
                     ? deepOmitUndefined(value)
                     : value
             ),
