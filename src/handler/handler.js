@@ -16,7 +16,7 @@ function deepOmitUndefined(object) {
         mapValues(
             object,
             (value) => (
-                typeof value === 'object'
+                value && typeof value === 'object'
                     ? deepOmitUndefined(value)
                     : value
             ),
@@ -55,9 +55,11 @@ export default class Handler {
         try {
             const input = await this.processInput(req, res);
             const output = await this.call(input, req, res);
-            return this.processOutput(output, req, res);
+            const result = await this.processOutput(output, req, res);
+            return result;
         } catch (error) {
-            return this.processError(error, req, res);
+            const result = await this.processError(error, req, res);
+            return result;
         }
     }
 
@@ -84,13 +86,12 @@ export default class Handler {
             return res.status(this.statusCode).send();
         }
 
-        const resource = await this.processOutputData(output);
+        const resource = this.processOutputData(output);
         return res.status(this.statusCode).send(resource);
     }
 
     processOutputData(output) {
         const convertedOutput = deepOmitUndefined(this.output.castOutput(output));
-
         try {
             return this.output.validate(convertedOutput);
         } catch (error) {
