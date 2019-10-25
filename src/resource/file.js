@@ -1,6 +1,8 @@
 import buildVersion from '../versions';
 
-export default class File {
+/* The type for a resource that uses a file.
+ */
+export default class FileType {
     build(openapiVersion) {
         return buildVersion(this, openapiVersion);
     }

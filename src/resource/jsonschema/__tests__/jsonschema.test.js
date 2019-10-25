@@ -101,7 +101,7 @@ describe('JSONSchemaResource', () => {
     });
 
     describe('castInput()', () => {
-        it('undefines unmapped properties', () => {
+        it('preserves unmapped properties', () => {
             const data = {
                 nullableString: null,
                 foo: 'bar',
@@ -109,6 +109,7 @@ describe('JSONSchemaResource', () => {
             const input = resource.castInput(data);
             expect(input).toEqual({
                 nullableString: null,
+                foo: 'bar',
             });
         });
         it('converts mapped properties', () => {

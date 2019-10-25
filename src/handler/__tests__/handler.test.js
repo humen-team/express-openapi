@@ -139,8 +139,7 @@ describe('handler', () => {
                 items: [
                     {
                         name: 'name',
-                        // XXX TODO: fix resource castOutput
-                        bar: undefined,
+                        bar: 'whatever',
                     },
                 ],
             };
@@ -149,7 +148,8 @@ describe('handler', () => {
                 flag: true,
                 items: [
                     {
-                        name: 'name',
+                        name: undefined,
+                        bar: undefined,
                     },
                 ],
             });

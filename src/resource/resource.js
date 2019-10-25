@@ -3,8 +3,18 @@ import ResourceConfig from './config';
 /* A resource defines a contract for the inputs and outputs of Operations.
  */
 export default class Resource {
-    constructor(config) {
+    constructor(options = {}) {
+        const { config, registry } = options;
+
         this.config = config || new ResourceConfig();
+        this.registry = registry || {};
+    }
+
+    get options() {
+        return {
+            config: this.config,
+            registry: this.registry,
+        };
     }
 
     get keys() { // eslint-disable-line class-methods-use-this

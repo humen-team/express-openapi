@@ -2,7 +2,7 @@ import { NO_CONTENT } from 'http-status-codes';
 import { mapValues } from 'lodash';
 
 import { JSON_MIMETYPE } from '../constants';
-import File from '../resource/file';
+import FileType from '../resource/file';
 import buildVersion from '../versions';
 
 /* Represents an OpenAPI Response.
@@ -99,7 +99,7 @@ export default class Response {
             description: `${resourceName} file content`,
             headers,
             name: statusCode,
-            file: new File(),
+            file: new FileType(),
         });
     }
 }

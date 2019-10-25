@@ -13,46 +13,22 @@ import { Validator } from 'jsonschema';
 import UnprocessableEntity from '../../errors/unprocessable_entity';
 import Reference from '../reference';
 import Resource from '../resource';
+import mapSchema from './map';
 import { buildProperty } from './property';
 import { castInputValue, castOutputValue } from './types';
-
-function deepCast(object, properties, cast) {
-    return mapValues(
-        object,
-        (value, key) => {
-            const property = properties[key];
-            if (!property) {
-                return undefined;
-            }
-
-            /*
-            if (property.type === 'array') {
-                return value.map(
-                    (item) => deepCast(item, property.items, cast),
-                );
-            }
-
-            if (property.type === 'object') {
-                return deepCast(value, property, cast);
-            }
-            */
-
-            return cast(value, property);
-        },
-    );
-}
 
 /* Defines an OpenAPI compatible resource using JSONSchema.
  */
 export default class JSONSchemaResource extends Resource {
-    constructor(schema, config) {
-        super(config);
+    constructor(schema, options) {
+        super(options);
         // default to stricter validation
-        const { additionalProperties } = schema;
+        const { additionalProperties, type } = schema;
         this.schema = {
             additionalProperties: additionalProperties === undefined
                 ? false
                 : additionalProperties,
+            type: type || 'object',
             ...schema,
         };
         this.validator = new Validator();
@@ -98,13 +74,25 @@ export default class JSONSchemaResource extends Resource {
     /* Convert JSON data to this resource's expected types.
      */
     castInput(input) {
-        return deepCast(input, this.properties, castInputValue);
+        return mapSchema(
+            input,
+            this.schema,
+            this.registry,
+            // NB: keep unmapped values as additionalProperties
+            (object, schema) => (schema ? castInputValue(object, schema) : object),
+        );
     }
 
     /* Convert this resource's data to JSON types.
      */
     castOutput(output) {
-        return deepCast(output, this.properties, castOutputValue);
+        return mapSchema(
+            output,
+            this.schema,
+            this.registry,
+            // NB: omit unmapped values to avoid additionalProperties
+            (object, schema) => (schema ? castOutputValue(object, schema) : undefined),
+        );
     }
 
     toList() {
@@ -114,7 +102,7 @@ export default class JSONSchemaResource extends Resource {
     }
 
     toRef() {
-        return new Reference(this.id);
+        return new Reference(this.id, this.registry);
     }
 
     /* Validate data against this JSONSchema schema.
@@ -139,6 +127,7 @@ export default class JSONSchemaResource extends Resource {
             id,
             properties,
             required: Object.keys(properties),
+            type: 'object',
         });
     }
 
@@ -152,9 +141,9 @@ export default class JSONSchemaResource extends Resource {
         } = options;
         return new JSONSchemaResource({
             id,
-            type: 'object',
             properties: merge(properties, this.properties),
             required: union(required, this.required),
+            type: 'object',
         });
     }
 
@@ -168,9 +157,9 @@ export default class JSONSchemaResource extends Resource {
         } = options;
         return new JSONSchemaResource({
             id,
-            type: 'object',
             properties: omit(this.properties, properties),
             required: required || difference(this.required, properties),
+            type: 'object',
         });
     }
 
@@ -184,31 +173,21 @@ export default class JSONSchemaResource extends Resource {
         } = options;
         return new JSONSchemaResource({
             id,
-            type: 'object',
             properties: pick(this.properties, properties),
             required: isUndefined(required) ? intersection(this.required, properties) : required,
+            type: 'object',
         });
-    }
-
-    /* Add internal definitions.
-     */
-    addDefinitions({ definitions }) {
-        // XXX make definition management nicer
-        this.schema.definitions = {};
-        definitions.forEach(
-            (definition) => {
-                this.schema.definitions[definition.id] = definition;
-            },
-        );
-        return this;
     }
 
     /* Add another schema to the validator.
      */
-    addSchemaReference({ $ref, schema }) {
+    addReference(schema) {
+        this.registry[`#${schema.id}`] = schema.schema;
+
+        const id = `${this.id}#${schema.id}`;
         this.validator.addSchema({
-            ...schema,
-            id: `${this.id}${$ref}`,
+            ...schema.schema,
+            id,
         });
         return this;
     }

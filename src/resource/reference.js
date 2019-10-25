@@ -1,5 +1,7 @@
 import buildVersion from '../versions';
 
+/* A reference to a resource.
+ */
 export default class Reference {
     constructor(id) {
         this.id = id;

@@ -1,8 +1,13 @@
 /* Define how resources collections will paginate.
  */
 export default class DefaultPagingStrategy {
-    constructor() {
-        this.hasCount = true;
-        this.hasOffsetLimit = true;
+    constructor(options = {}) {
+        const {
+            hasCount = true,
+            hasOffsetLimit = true,
+        } = options;
+
+        this.hasCount = hasCount;
+        this.hasOffsetLimit = hasOffsetLimit;
     }
 }

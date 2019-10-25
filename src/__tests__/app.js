@@ -33,8 +33,23 @@ import {
     UpdateFoo,
 } from './resources';
 
-export default function createApp() {
+export function newApp({ operations }) {
     const app = express();
+
+    app.use(cors());
+    app.use(express.json());
+
+    operations.forEach((operation) => {
+        operation.register(app);
+    });
+
+    app.get('/openapi/2.0', serveSpec({ openapiVersion: '2.0', operations }));
+    app.get('/openapi/3.0.0', serveSpec({ openapiVersion: '3.0.0', operations }));
+
+    return app;
+}
+
+export default function createApp() {
     const operations = [
         new Create({ input: CreateFoo, output: Foo, route: routes.create, resourceName: 'foo' }),
         new Count({ input: CountFoo, route: routes.count, resourceName: 'foo' }),
@@ -64,17 +79,7 @@ export default function createApp() {
         }),
     ];
 
-    app.use(cors());
-    app.use(express.json());
-
-    operations.forEach((operation) => {
-        operation.register(app);
-    });
-
-    app.get('/openapi/2.0', serveSpec({ openapiVersion: '2.0', operations }));
-    app.get('/openapi/3.0.0', serveSpec({ openapiVersion: '3.0.0', operations }));
-
-    return app;
+    return newApp({ operations });
 }
 
 if (require.main === module) {

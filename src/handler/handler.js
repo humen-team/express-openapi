@@ -12,17 +12,17 @@ function deepOmitUndefined(object) {
         );
     }
 
-    return omitBy(
-        mapValues(
-            object,
-            (value) => (
-                isPlainObject(value)
-                    ? deepOmitUndefined(value)
-                    : value
+    if (isPlainObject(object)) {
+        return omitBy(
+            mapValues(
+                object,
+                (value) => deepOmitUndefined(value),
             ),
-        ),
-        isUndefined,
-    );
+            isUndefined,
+        );
+    }
+
+    return object;
 }
 
 

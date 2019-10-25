@@ -55,6 +55,7 @@ Object {
           "x-nullable": false,
         },
       },
+      "type": "object",
     },
     "Foo": Object {
       "properties": Object {
@@ -93,7 +94,7 @@ Object {
         },
         "items": Object {
           "items": Object {
-            "$ref": "#/definitions/Foo",
+            "$ref": "#Foo",
           },
           "type": "array",
           "x-nullable": false,
@@ -607,6 +608,7 @@ Object {
             "type": "integer",
           },
         },
+        "type": "object",
       },
       "Foo": Object {
         "properties": Object {
@@ -645,7 +647,7 @@ Object {
           },
           "items": Object {
             "items": Object {
-              "$ref": "#/components/schemas/Foo",
+              "$ref": "#Foo",
             },
             "nullable": false,
             "type": "array",

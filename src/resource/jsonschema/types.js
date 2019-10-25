@@ -1,7 +1,7 @@
 /* Cast a JSON value to a JSON Schema primitive type.
  */
-export function castInputValue(value, property) {
-    const { format, type } = property;
+export function castInputValue(value, schema) {
+    const { format, type } = schema;
 
     if (type === 'integer' || type === 'long') {
         return parseInt(value, 10);
