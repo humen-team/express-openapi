@@ -28,41 +28,53 @@ The following will create a simple `express` app with a single resource and its 
 
  1. Import `express` and create an `app`:
 
-        const express = require('express');
-        const app = express();
+    ```node
+    const express = require('express');
+    const app = express();
+    ```
 
  2. Define a resource to represent your return type:
 
-        const { JSONSchemaResource } = require('@humen-team/express-openapi');
-        const MyResource = JSONSchemaResource.all({
-            id: 'MyResource',
-            properties: {
-                id: {
-                    type: 'string',
-                },
+    ```node
+    const { JSONSchemaResource } = require('@humen-team/express-openapi');
+    const MyResource = JSONSchemaResource.all({
+        id: 'MyResource',
+        properties: {
+            id: {
+                type: 'string',
             },
-        });
+        },
+    });
+    ``
 
  3. Define an operation to return an instance of your resource:
 
-        const { Retrieve } = require('@humen-team/express-openapi');
-        const operation = new Retrieve({
-            resourceName: MyResource.id,
-            output: MyResource,
-            route: (id) => ({ id }),
-        });
+    ```node
+    const { Retrieve } = require('@humen-team/express-openapi');
+    const operation = new Retrieve({
+        resourceName: MyResource.id,
+        output: MyResource,
+        route: (id) => ({ id }),
+    });
+    ```
 
  4. Register the operation with the app:
 
-        operation.register(app);
+    ```node
+    operation.register(app);
+    ```
 
  5. Enable serving the OpenAPI spec:
 
-        app.get('/openapi', serveSpec({ operations: [operation] }));
+    ```node
+    app.get('/openapi', serveSpec({ operations: [operation] }));
+    ```
 
  6. Start the server:
 
-        app.listen(3000);
+    ```node
+    app.listen(3000, () => { console.log('Server listening on port 3000') });
+    ```
 
 You will now be able to retrieve a resource at [http://localhost:3000/my_resource/42]()
 and see the OpenAPI spec at [http://localhost:3000/openapi]()
@@ -89,17 +101,19 @@ standard operations.
 
 For example:
 
-    const { JSONSchemaResource } = require('@humen-team/express-openapi');
+```node
+const { JSONSchemaResource } = require('@humen-team/express-openapi');
 
-    const Foo = JSONSchemaResource.all({
-        id: 'Foo',
-        properties: {
-            bar: {
-                type: 'string',
-            },
+const Foo = JSONSchemaResource.all({
+    id: 'Foo',
+    properties: {
+        bar: {
+            type: 'string',
         },
-    });
-    Foo.validate({ bar: 'a-string' });
+    },
+});
+Foo.validate({ bar: 'a-string' });
+```
 
 
 ## CRUD By Default
@@ -140,3 +154,31 @@ For example, the `Create` operation:
  -  Accepts an input request body that represents the required parameters for creating a new instance
  -  Returns an output response body that represents the created instance
  -  Returns the `201 Created` status code on success and various other status codes on error.
+
+
+### Calling Conventions
+
+When using an operation (e.g. `Retrieve` or `Create`), your application code is defined as a function
+that is passed as the `route` option to the operation's constructor:
+
+```node
+const operation = new Retrieve({
+    resourceName: MyResource.id,
+    output: MyResource,
+    route: (id) => ({ id }),
+});
+```
+
+The `route` function accepts inputs using one of two signatures.
+
+ -  For collection operations, the function will receive `(input, req, res)`, where `input`
+    is derived from the operation's `input` resource and the HTTP request body or query string.
+
+ -  For instance operations, the function will receive `(identifier, input, req, res)`, where
+    `identifier` is added to the collection arguments, based on provided HTTP `path`.
+
+Note that `req` and `res` are available (e.g. to access `res.locals`), but will generally not be
+needed. The application code should not need to write to the HTTP response directly.
+
+The `route` function is expected to return any output data (or a `Promise` thereof); this data will
+be passed to the operation's `output` resource for validation and encoding.
