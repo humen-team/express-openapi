@@ -1,8 +1,10 @@
 import { get, mapValues } from 'lodash';
 
+import Reference from '../reference';
+
 /* Map a function over an object and a schema.
  */
-export default function mapSchema(value, schema, registry, func, path = '') {
+export default function mapSchema(value, schema, func, path = '') {
     if (!schema) {
         return func(value, null);
     }
@@ -10,14 +12,15 @@ export default function mapSchema(value, schema, registry, func, path = '') {
     const { $ref, type } = schema;
 
     if ($ref) {
-        // XXX resolved Reference
-        return mapSchema(
-            value,
-            registry[$ref],
-            registry,
-            func,
-            `${path}.$ref`,
-        );
+        if ($ref instanceof Reference) {
+            return mapSchema(
+                value,
+                $ref.resource,
+                func,
+                `${path}.$ref`,
+            );
+        }
+        throw new Error('Expected $ref to be instance of Reference; did you use Resource.toRef()?');
     }
 
     if (type === 'array') {
@@ -25,7 +28,6 @@ export default function mapSchema(value, schema, registry, func, path = '') {
             (child) => mapSchema(
                 child,
                 get(schema, 'items'),
-                registry,
                 func,
                 `${path}.items`,
             ),
@@ -38,7 +40,6 @@ export default function mapSchema(value, schema, registry, func, path = '') {
             (child, key) => mapSchema(
                 child,
                 get(schema, `properties.${key}`),
-                registry,
                 func,
                 `${path}.properties.${key}`,
             ),

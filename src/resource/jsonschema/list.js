@@ -7,7 +7,6 @@ export default class JSONSchemaListResource extends JSONSchemaResource {
         const schema = JSONSchemaListResource.createSchema(item);
         super(schema, item.options);
         this.item = item;
-        this.addReference(item);
     }
 
     /* Create a new JSONSchema represention for a list of items.
@@ -22,8 +21,7 @@ export default class JSONSchemaListResource extends JSONSchemaResource {
                 items: {
                     type: 'array',
                     items: {
-                        // XXX fix references
-                        $ref: `#${item.id}`,
+                        $ref: item.toRef(),
                     },
                 },
             },

@@ -1,19 +1,18 @@
 import ResourceConfig from './config';
+import Reference from './reference';
 
 /* A resource defines a contract for the inputs and outputs of Operations.
  */
 export default class Resource {
     constructor(options = {}) {
-        const { config, registry } = options;
+        const { config } = options;
 
         this.config = config || new ResourceConfig();
-        this.registry = registry || {};
     }
 
     get options() {
         return {
             config: this.config,
-            registry: this.registry,
         };
     }
 
@@ -42,7 +41,7 @@ export default class Resource {
     /* Create a reference to this resource.
      */
     toRef() { // eslint-disable-line class-methods-use-this
-        throw new Error('Resource.toRef() not implemented');
+        return new Reference(this);
     }
 
     /* Validate data according to this resource's definition, returning the valid data.

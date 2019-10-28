@@ -51,7 +51,9 @@ export default class Response {
     buildSchema(openapiVersion) {
         if (this.contentType === JSON_MIMETYPE) {
             if (this.ref) {
-                return this.ref.build(openapiVersion);
+                return {
+                    $ref: this.ref.build(openapiVersion),
+                };
             }
         } else if (this.file) {
             return this.file.build(openapiVersion);
