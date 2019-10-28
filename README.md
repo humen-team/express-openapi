@@ -113,22 +113,22 @@ a hypothetical resource of type `foo`:
 
 Some operations apply to the collection of all `foo`:
 
-| Operation | Method | Path | Meaning |
-| --------- | ------ | ---- | ------- |
-| `Create`  | `POST` | /foo | **search** within the collection |
-| `Search`  | `GET`  | /foo | **create** a new instance within the collection |
+| Operation | Method | Path   | Meaning |
+| --------- | ------ | ----   | ------- |
+| `Create`  | `POST` | `/foo` | **search** within the collection |
+| `Search`  | `GET`  | `/foo` | **create** a new instance within the collection |
 
 
 ### Instance Operations
 
 The remaining operations apply to a specific instance of `foo`:
 
-| Operation  | Method   | Path        | Meaning |
-| ---------  | ------   | ----        | ------- |
-| `Delete`   | `DELETE` | /foo/:fooId | **delete** an existing instance |
-| `Replace`  | `PUT`    | /foo/:fooId | **replace** (overwrite) an instance |
-| `Retrieve` | `GET`    | /foo/:fooId | **retrieve** an existing instance |
-| `Update`   | `PATCH`  | /foo/:fooId | **update** an existing instance |
+| Operation  | Method   | Path          | Meaning |
+| ---------  | ------   | ----          | ------- |
+| `Delete`   | `DELETE` | `/foo/:fooId` | **delete** an existing instance |
+| `Replace`  | `PUT`    | `/foo/:fooId` | **replace** (overwrite) an instance |
+| `Retrieve` | `GET`    | `/foo/:fooId` | **retrieve** an existing instance |
+| `Update`   | `PATCH`  | `/foo/:fooId` | **update** an existing instance |
 
 
 ### Standard Operations
