@@ -2,7 +2,6 @@ import {
     difference,
     intersection,
     isUndefined,
-    mapValues,
     merge,
     omit,
     pick,
@@ -11,8 +10,8 @@ import {
 
 import UnprocessableEntity from '../../errors/unprocessable_entity';
 import Resource from '../resource';
+import buildOpenAPI from './builder';
 import mapSchema from './map';
-import { buildProperty } from './property';
 import { castInputValue, castOutputValue } from './types';
 import createValidator from './validator';
 
@@ -61,10 +60,7 @@ export default class JSONSchemaResource extends Resource {
         const { properties, required, type } = this.schema;
         return {
             // omit the `id` field
-            properties: mapValues(
-                properties,
-                (value) => buildProperty(value, openapiVersion),
-            ),
+            properties: buildOpenAPI(properties, openapiVersion),
             required,
             type,
         };
