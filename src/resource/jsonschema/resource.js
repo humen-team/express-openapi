@@ -8,14 +8,13 @@ import {
     pick,
     union,
 } from 'lodash';
-import { Validator } from 'jsonschema';
 
 import UnprocessableEntity from '../../errors/unprocessable_entity';
-import Reference from '../reference';
 import Resource from '../resource';
 import mapSchema from './map';
 import { buildProperty } from './property';
 import { castInputValue, castOutputValue } from './types';
+import createValidator from './validator';
 
 /* Defines an OpenAPI compatible resource using JSONSchema.
  */
@@ -31,7 +30,7 @@ export default class JSONSchemaResource extends Resource {
             type: type || 'object',
             ...schema,
         };
-        this.validator = new Validator();
+        this.validator = null;
     }
 
     get id() {
@@ -77,7 +76,6 @@ export default class JSONSchemaResource extends Resource {
         return mapSchema(
             input,
             this.schema,
-            this.registry,
             // NB: keep unmapped values as additionalProperties
             (object, schema) => (schema ? castInputValue(object, schema) : object),
         );
@@ -89,7 +87,6 @@ export default class JSONSchemaResource extends Resource {
         return mapSchema(
             output,
             this.schema,
-            this.registry,
             // NB: omit unmapped values to avoid additionalProperties
             (object, schema) => (schema ? castOutputValue(object, schema) : undefined),
         );
@@ -101,14 +98,15 @@ export default class JSONSchemaResource extends Resource {
         return new JSONSchemaResourceList(this);
     }
 
-    toRef() {
-        return new Reference(this.id, this.registry);
-    }
-
     /* Validate data against this JSONSchema schema.
      */
     validate(data) {
-        const result = this.validator.validate(data, this.schema);
+        if (!this.validator) {
+            this.validator = createValidator(this);
+        }
+
+        const result = this.validator.validate(data);
+
         if (result.errors.length) {
             // NB: we could report on mutiple errors
             const { property, message } = result.errors[0];
@@ -177,18 +175,5 @@ export default class JSONSchemaResource extends Resource {
             required: isUndefined(required) ? intersection(this.required, properties) : required,
             type: 'object',
         });
-    }
-
-    /* Add another schema to the validator.
-     */
-    addReference(schema) {
-        this.registry[`#${schema.id}`] = schema.schema;
-
-        const id = `${this.id}#${schema.id}`;
-        this.validator.addSchema({
-            ...schema.schema,
-            id,
-        });
-        return this;
     }
 }

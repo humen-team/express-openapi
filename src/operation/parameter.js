@@ -20,7 +20,7 @@ export default class Parameter {
             name: this.name,
             in: this.parameterType,
             required: this.required,
-            schema: this.ref ? this.ref.build(openapiVersion) : undefined,
+            schema: this.ref ? { $ref: this.ref.build(openapiVersion) } : undefined,
             type: this.type,
         };
     }

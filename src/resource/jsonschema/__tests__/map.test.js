@@ -19,7 +19,7 @@ describe('mapSchema', () => {
                 additionalProperty: 'additionalProperty',
                 value: 'string',
             };
-            const mapping = mapSchema(object, schema, schema.registry, isDefined);
+            const mapping = mapSchema(object, schema, isDefined);
             expect(mapping).toEqual({
                 additionalProperty: false,
                 value: true,
@@ -36,7 +36,7 @@ describe('mapSchema', () => {
                     'string2',
                 ],
             };
-            const mapping = mapSchema(object, schema, schema.registry, isDefined);
+            const mapping = mapSchema(object, schema, isDefined);
             expect(mapping).toEqual({
                 additionalProperty: false,
                 value: [
@@ -56,7 +56,7 @@ describe('mapSchema', () => {
                     value: 'string',
                 },
             };
-            const mapping = mapSchema(object, schema, schema.registry, isDefined);
+            const mapping = mapSchema(object, schema, isDefined);
             expect(mapping).toEqual({
                 additionalProperty: false,
                 value: {
@@ -76,7 +76,7 @@ describe('mapSchema', () => {
                     value: 'string',
                 },
             };
-            const mapping = mapSchema(object, schema, schema.registry, isDefined);
+            const mapping = mapSchema(object, schema, isDefined);
             expect(mapping).toEqual({
                 additionalProperty: false,
                 value: {
@@ -96,7 +96,7 @@ describe('mapSchema', () => {
                     value: 'string',
                 }],
             };
-            const mapping = mapSchema(object, schema, schema.registry, isDefined);
+            const mapping = mapSchema(object, schema, isDefined);
             expect(mapping).toEqual({
                 additionalProperty: false,
                 value: [{

@@ -124,7 +124,9 @@ export default class Operation {
                     required: true,
                     content: {
                         [this.consumes || DEFAULT_PRODUCES]: {
-                            schema: this.input.toRef().build(openapiVersion),
+                            schema: {
+                                $ref: this.input.toRef().build(openapiVersion),
+                            },
                         },
                     },
                 }

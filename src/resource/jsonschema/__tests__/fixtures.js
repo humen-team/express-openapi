@@ -51,11 +51,10 @@ export const NestedReferenceSchema = JSONSchemaResource.all({
     id: 'NestedReference',
     properties: {
         value: {
-            // XXX $ref: ChildSchema.toRef(),
-            $ref: '#Child',
+            $ref: ChildSchema.toRef(),
         },
     },
-}).addReference(ChildSchema);
+});
 
 export const NestedReferenceListSchema = JSONSchemaResource.all({
     id: 'NestedReferenceList',
@@ -63,9 +62,8 @@ export const NestedReferenceListSchema = JSONSchemaResource.all({
         value: {
             type: 'array',
             items: {
-                // XXX $ref: ChildSchema.toRef(),
-                $ref: '#Child',
+                $ref: ChildSchema.toRef(),
             },
         },
     },
-}).addReference(ChildSchema);
+});

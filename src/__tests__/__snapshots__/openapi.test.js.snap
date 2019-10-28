@@ -94,7 +94,7 @@ Object {
         },
         "items": Object {
           "items": Object {
-            "$ref": "#Foo",
+            "$ref": "#/definitions/Foo",
           },
           "type": "array",
           "x-nullable": false,
@@ -647,7 +647,7 @@ Object {
           },
           "items": Object {
             "items": Object {
-              "$ref": "#Foo",
+              "$ref": "#/components/schemas/Foo",
             },
             "nullable": false,
             "type": "array",

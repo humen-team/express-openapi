@@ -48,4 +48,4 @@ export const Pet = JSONSchemaResource.all({
             ],
         },
     },
-}).addReference(CatInfo).addReference(DogInfo);
+});

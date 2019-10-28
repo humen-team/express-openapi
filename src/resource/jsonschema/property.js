@@ -1,7 +1,7 @@
 import { merge, omit } from 'lodash';
 
-import Reference from '../reference';
 import { OPENAPI_2_0 } from '../../constants';
+import Reference from '../reference';
 
 /* Does this schema have a nullable type?
  */
@@ -27,8 +27,10 @@ export function buildProperty(schema, openapiVersion) {
         : type;
 
     // special case #3: items is a reference to another part of the document
-    if (items instanceof Reference) {
-        converted.items = items.build(openapiVersion);
+    if (items && items.$ref && items.$ref instanceof Reference) {
+        converted.items = {
+            $ref: items.$ref.build(openapiVersion),
+        };
     } else {
         converted.items = items;
     }
