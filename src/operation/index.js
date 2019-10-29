@@ -1,10 +1,11 @@
-import Count from './count';
 import Command from './command';
+import Count from './count';
 import Create from './create';
 import CreateFile from './create_file';
 import CreateFor from './create_for';
 import Delete from './delete';
 import DeleteMany from './delete_many';
+import Namespace from './namespace';
 import Query from './query';
 import Replace from './replace';
 import ReplaceFile from './replace_file';
@@ -21,11 +22,12 @@ export {
     CreateFor,
     Delete,
     DeleteMany,
+    Namespace,
     Query,
-    Retrieve,
-    RetrieveFile,
     Replace,
     ReplaceFile,
+    Retrieve,
+    RetrieveFile,
     Search,
     Update,
 };
