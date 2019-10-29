@@ -35,13 +35,13 @@ function dereference(object, validator, path = '') {
                 }
 
                 // use '/foo' as the generic reference path
-                const refId = `/${value.id}`;
+                const refId = value.id;
 
                 // recurse to the referenced schema
-                const referenceSchema = dereference(value.resource.schema, validator);
+                const { id, ...referenceSchema } = dereference(value.resource.schema, validator);
 
                 // save the reference schema under the reference id *locally* within this validator.
-                validator.addSchema(referenceSchema, refId);
+                validator.addSchema({ id: refId, ...referenceSchema });
 
                 // return the generic reference path in place of the Reference
                 return refId;
