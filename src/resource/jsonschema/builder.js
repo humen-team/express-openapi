@@ -32,7 +32,7 @@ export default function buildOpenAPI(object, openapiVersion, path = '') {
                 object,
                 (value, key) => {
                     // special case #2: types cannot be lists or contain `null`
-                    if (key === 'type') {
+                    if (key === 'type' && !isPlainObject(value)) {
                         return value?.filter
                             ? value.filter((item) => item !== null)[0]
                             : value;

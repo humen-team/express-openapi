@@ -60,7 +60,7 @@ export default class JSONSchemaResource extends Resource {
         const { properties, required, type } = this.schema;
         return {
             // omit the `id` field
-            properties: buildOpenAPI(properties, openapiVersion),
+            properties: buildOpenAPI(properties, openapiVersion, this.id),
             required,
             type,
         };
