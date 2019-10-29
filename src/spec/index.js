@@ -1,3 +1,5 @@
+import { concat, flatten } from 'lodash';
+
 import Info from './info';
 import Server from './server';
 import Spec from './spec';
@@ -5,7 +7,11 @@ import Spec from './spec';
 function buildSpec({ info, openapiVersion, operations, server, ...more }) {
     const spec = new Spec({
         info,
-        operations,
+        operations: flatten(concat(
+            operations.map(
+                (operation) => operation.operations || operation,
+            ),
+        )),
         server,
         ...more,
     });

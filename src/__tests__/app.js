@@ -4,18 +4,9 @@ import cors from 'cors';
 import express from 'express';
 
 import {
-    Create,
-    CreateFile,
     Command,
-    Count,
-    Delete,
+    Namespace,
     Query,
-    Replace,
-    ReplaceFile,
-    Retrieve,
-    RetrieveFile,
-    Update,
-    Search,
     serveSpec,
 } from '..';
 import routes from './routes';
@@ -50,33 +41,40 @@ export function newApp({ operations }) {
 }
 
 export default function createApp() {
+    const foo = new Namespace('foo')
+        .create({ input: CreateFoo, output: Foo, route: routes.create })
+        .count({ input: CountFoo, route: routes.count })
+        .delete({ route: routes.delete })
+        .replace({ input: ReplaceFoo, output: Foo, route: routes.replace })
+        .retrieve({ output: Foo, route: routes.retrieve })
+        .search({ input: SearchFoo, output: Foo.toList(), route: routes.search })
+        .update({ input: UpdateFoo, output: Foo, route: routes.update });
+
+    const fooFile = new Namespace('fooFile')
+        .createFile({ output: FooFile, route: routes.createFile })
+        .replaceFile({ output: FooFile, route: routes.replaceFile })
+        .retrieveFile({ route: routes.retrieveFile, produces: 'image/png' });
+
+    const command = new Command({
+        input: CommandInput,
+        operationId: 'mycommand',
+        output: CommandOutput,
+        path: '/command',
+        route: routes.command,
+    });
+    const query = new Query({
+        input: QueryInput,
+        operationId: 'myquery',
+        output: QueryOutput,
+        path: '/query',
+        route: routes.query,
+    });
+
     const operations = [
-        new Create({ input: CreateFoo, output: Foo, route: routes.create, resourceName: 'foo' }),
-        new Count({ input: CountFoo, route: routes.count, resourceName: 'foo' }),
-        new Delete({ route: routes.delete, resourceName: 'foo' }),
-        new Replace({ input: ReplaceFoo, output: Foo, route: routes.replace, resourceName: 'foo' }),
-        new Retrieve({ output: Foo, route: routes.retrieve, resourceName: 'foo' }),
-        new Search({ input: SearchFoo, output: Foo.toList(), route: routes.search, resourceName: 'foo' }),
-        new Update({ input: UpdateFoo, output: Foo, route: routes.update, resourceName: 'foo' }),
-
-        new CreateFile({ output: FooFile, route: routes.createFile, resourceName: 'fooFile' }),
-        new ReplaceFile({ output: FooFile, route: routes.replaceFile, resourceName: 'fooFile' }),
-        new RetrieveFile({ route: routes.retrieveFile, produces: 'image/png', resourceName: 'fooFile' }),
-
-        new Command({
-            input: CommandInput,
-            operationId: 'mycommand',
-            output: CommandOutput,
-            path: '/command',
-            route: routes.command,
-        }),
-        new Query({
-            input: QueryInput,
-            operationId: 'myquery',
-            output: QueryOutput,
-            path: '/query',
-            route: routes.query,
-        }),
+        foo,
+        fooFile,
+        command,
+        query,
     ];
 
     return newApp({ operations });

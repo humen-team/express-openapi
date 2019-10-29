@@ -35,6 +35,9 @@
         "jest": "^24.8.0",
         "supertest": "^4.0.2"
     },
+    "peerDependencies": {
+        "express": "^4.17.1"
+    },
     "jest": {
         "modulePaths": [
             "<rootDir>/src"

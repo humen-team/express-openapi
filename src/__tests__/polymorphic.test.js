@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import { Create, Search } from '..';
+import { Namespace } from '..';
 import { newApp } from './app';
 import { Pet, PetType } from './fixtures';
 
@@ -33,11 +33,11 @@ describe('polymorphic schema', () => {
     let app;
 
     beforeEach(() => {
-        const operations = [
-            new Create({ input: Pet, output: Pet, resourceName: 'pet', route: create }),
-            new Search({ output: Pet.toList(), resourceName: 'pet', route: search }),
-        ];
-        app = newApp({ operations });
+        const pet = new Namespace('pet')
+            .create({ input: Pet, output: Pet, route: create })
+            .search({ output: Pet.toList(), route: search });
+
+        app = newApp({ operations: [pet] });
     });
 
     describe('search', () => {
