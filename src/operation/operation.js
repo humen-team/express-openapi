@@ -18,6 +18,7 @@ export default class Operation {
             error,
             input,
             method,
+            middleware,
             operationId,
             output,
             path,
@@ -33,6 +34,7 @@ export default class Operation {
         this.input = input;
         this.operationId = operationId || this.constructor.defaultOperationId;
         this.output = output;
+        this.middleware = middleware || [];
         this.produces = produces;
         this.statusCode = statusCode || OK;
         this.tags = tags;
@@ -57,7 +59,7 @@ export default class Operation {
      */
     register(app) {
         const handler = this.constructor.createHandler(this);
-        app[this.method.toLowerCase()](this.path, handler.handle.bind(handler));
+        app[this.method.toLowerCase()](this.path, ...this.middleware, handler.handle.bind(handler));
     }
 
     /* Define the default operation id.
