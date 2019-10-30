@@ -1,11 +1,21 @@
+import { get } from 'lodash';
+
 import { OPENAPI_2_0, OPENAPI_3_0_0 } from './constants';
 
-export default function buildVersion(self, openapiVersion) {
-    if (openapiVersion === OPENAPI_2_0) {
-        return self.build20(openapiVersion);
+export default function pickVersion(self, name, openapiVersion) {
+    let suffix;
+    switch (openapiVersion) {
+        case OPENAPI_2_0:
+            suffix = '20';
+            break;
+        case OPENAPI_3_0_0:
+            suffix = '300';
+            break;
+        default:
+            throw new Error(`OpenAPI ${openapiVersion} is not supported`);
     }
-    if (openapiVersion === OPENAPI_3_0_0) {
-        return self.build300(openapiVersion);
-    }
-    throw new Error(`OpenAPI ${openapiVersion} is not supported`);
+
+    const funcName = `${name}${suffix}`;
+    const func = get(self, funcName);
+    return func.bind(self);
 }

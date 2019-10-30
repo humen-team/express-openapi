@@ -1,7 +1,8 @@
+import { OK } from 'http-status-codes';
 import { concat, merge } from 'lodash';
 
-import { DEFAULT_OPENAPI_VERSION } from '../constants';
-import buildVersion from '../versions';
+import { DEFAULT_OPENAPI_VERSION, OPENAPI_2_0, OPENAPI_3_0_0 } from '../constants';
+import pickVersion from '../versions';
 import Info from './info';
 import Server from './server';
 
@@ -19,13 +20,28 @@ export default class Spec {
         this.server = server || new Server();
         this.operations = operations || [];
         this.jwt = jwt;
+
+        this.serve20 = this.serve20.bind(this);
+        this.serve300 = this.serve300.bind(this);
+    }
+
+    serve(openapiVersion = DEFAULT_OPENAPI_VERSION) {
+        return pickVersion(this, 'serve', openapiVersion)();
+    }
+
+    serve20() {
+        return (req, res) => res.status(OK).send(this.build20());
+    }
+
+    serve300() {
+        return (req, res) => res.status(OK).send(this.build300());
     }
 
     build(openapiVersion = DEFAULT_OPENAPI_VERSION) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
-    build20(openapiVersion) {
+    build20(openapiVersion = OPENAPI_2_0) {
         return {
             swagger: openapiVersion,
             info: this.info.build(openapiVersion),
@@ -38,7 +54,7 @@ export default class Spec {
         };
     }
 
-    build300(openapiVersion) {
+    build300(openapiVersion = OPENAPI_3_0_0) {
         const spec = {
             openapi: openapiVersion,
             info: this.info.build(openapiVersion),

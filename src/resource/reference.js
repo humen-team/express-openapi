@@ -1,4 +1,4 @@
-import buildVersion from '../versions';
+import pickVersion from '../versions';
 
 /* A reference to a resource.
  *
@@ -17,7 +17,7 @@ export default class Reference {
     }
 
     build(openapiVersion) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
     build20() {

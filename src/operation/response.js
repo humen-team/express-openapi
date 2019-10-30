@@ -1,9 +1,9 @@
 import { NO_CONTENT } from 'http-status-codes';
 import { mapValues } from 'lodash';
 
-import { JSON_MIMETYPE } from '../constants';
+import { JSON_MIMETYPE, OPENAPI_2_0, OPENAPI_3_0_0 } from '../constants';
 import FileType from '../resource/file';
-import buildVersion from '../versions';
+import pickVersion from '../versions';
 
 /* Represents an OpenAPI Response.
  */
@@ -18,10 +18,10 @@ export default class Response {
     }
 
     build(openapiVersion) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
-    build20(openapiVersion) {
+    build20(openapiVersion = OPENAPI_2_0) {
         return {
             [this.name]: {
                 description: this.description,
@@ -30,7 +30,7 @@ export default class Response {
         };
     }
 
-    build300(openapiVersion) {
+    build300(openapiVersion = OPENAPI_3_0_0) {
         return {
             [this.name]: {
                 description: this.description,

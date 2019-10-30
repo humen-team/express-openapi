@@ -1,4 +1,6 @@
-import buildVersion from '../versions';
+import pickVersion from '../versions';
+
+import { OPENAPI_2_0 } from '../constants';
 
 /* Defines an OpenAPI parameter.
  */
@@ -12,10 +14,10 @@ export default class Parameter {
     }
 
     build(openapiVersion) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
-    build20(openapiVersion) {
+    build20(openapiVersion = OPENAPI_2_0) {
         return {
             name: this.name,
             in: this.parameterType,
