@@ -1,8 +1,8 @@
 import { NO_CONTENT, OK } from 'http-status-codes';
 import { concat } from 'lodash';
 
-import { DEFAULT_CONSUMES, DEFAULT_PRODUCES, OPENAPI_2_0 } from '../constants';
-import buildVersion from '../versions';
+import { DEFAULT_CONSUMES, DEFAULT_PRODUCES, OPENAPI_2_0, OPENAPI_3_0_0 } from '../constants';
+import pickVersion from '../versions';
 import Parameter from './parameter';
 import Response from './response';
 import { JSONSchemaResource } from '../resource';
@@ -101,10 +101,10 @@ export default class Operation {
     /* Build an OpenAPI definition for this operation.
      */
     build(openapiVersion) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
-    build20(openapiVersion) {
+    build20(openapiVersion = OPENAPI_2_0) {
         return {
             consumes: this.hasRequestBody ? [this.consumes || DEFAULT_CONSUMES] : undefined,
             description: this.description,
@@ -116,7 +116,7 @@ export default class Operation {
         };
     }
 
-    build300(openapiVersion) {
+    build300(openapiVersion = OPENAPI_3_0_0) {
         return {
             description: this.description,
             operationId: this.operationId,

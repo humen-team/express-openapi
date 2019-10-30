@@ -4,8 +4,8 @@ import Info from './info';
 import Server from './server';
 import Spec from './spec';
 
-function buildSpec({ info, openapiVersion, operations, server, ...more }) {
-    const spec = new Spec({
+function buildSpec({ info, operations, server, ...options }) {
+    return new Spec({
         info,
         operations: flatten(concat(
             operations.map(
@@ -13,16 +13,13 @@ function buildSpec({ info, openapiVersion, operations, server, ...more }) {
             ),
         )),
         server,
-        ...more,
+        ...options,
     });
-    return spec.build(openapiVersion);
 }
 
-function serveSpec(options) {
+function serveSpec({ openapiVersion, ...options }) {
     const spec = buildSpec(options);
-    return (req, res) => {
-        res.status(200).send(spec);
-    };
+    return spec.serve(openapiVersion);
 }
 
 export {

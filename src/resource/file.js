@@ -1,10 +1,10 @@
-import buildVersion from '../versions';
+import pickVersion from '../versions';
 
 /* The type for a resource that uses a file.
  */
 export default class FileType {
     build(openapiVersion) {
-        return buildVersion(this, openapiVersion);
+        return pickVersion(this, 'build', openapiVersion)();
     }
 
     build20() { // eslint-disable-line class-methods-use-this
