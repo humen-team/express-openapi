@@ -1,7 +1,15 @@
+export function parseType({ type }) {
+    if (Array.isArray(type) && Array.length === 1) {
+        return type[0];
+    }
+    return type;
+}
+
 /* Cast a JSON value to a JSON Schema primitive type.
  */
 export function castInputValue(value, schema) {
-    const { format, type } = schema;
+    const { format } = schema;
+    const type = parseType(schema);
 
     if (type === 'integer' || type === 'long') {
         return parseInt(value, 10);
