@@ -1,5 +1,4 @@
-import { snakeCase } from 'lodash';
-
+import NamingStrategy from '../naming';
 import Operation from './operation';
 import Parameter from './parameter';
 
@@ -10,20 +9,17 @@ import Parameter from './parameter';
  */
 export default class InstanceOperation extends Operation {
     constructor({ resourceName, suffix, ...more }) {
-        const identifierName = `${resourceName}Id`;
-        let path = `/${snakeCase(resourceName)}/:${identifierName}`;
-        if (suffix) {
-            path = `${path}/${suffix}`;
-        }
+        const namingStrategy = more.namingStrategy || new NamingStrategy();
         super({
-            path,
+            namingStrategy,
+            path: namingStrategy.toInstancePath(resourceName, suffix),
             tags: [
                 resourceName,
             ],
             ...more,
         });
         this.resourceName = resourceName;
-        this.identifierName = identifierName;
+        this.identifierName = namingStrategy.toIdentifierName(resourceName);
     }
 
     listPathParameters() {

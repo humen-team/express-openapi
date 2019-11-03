@@ -1,13 +1,13 @@
-import DefaultNamingStrategy from './naming';
-import DefaultPagingStrategy from './paging';
+import NamingStrategy from '../naming';
+import PagingStrategy from '../paging';
 
 /* Resource configuration enables overriding naming and paging strategies.
  */
 export default class ResourceConfig {
     constructor(options = {}) {
         const {
-            namingStrategy = new DefaultNamingStrategy(),
-            pagingStrategy = new DefaultPagingStrategy(),
+            namingStrategy = new NamingStrategy(),
+            pagingStrategy = new PagingStrategy(),
         } = options;
 
         this.namingStrategy = namingStrategy;

@@ -33,7 +33,7 @@ export default class JSONSchemaResource extends Resource {
     }
 
     get id() {
-        return this.config.namingStrategy.toName(this.schema.id);
+        return this.config.namingStrategy.toResourceId(this.schema.id);
     }
 
     get properties() {

@@ -35,16 +35,12 @@ export const Pet = JSONSchemaResource.all({
         },
         info: {
             anyOf: [
-                /*
                 {
-                    $ref: '#CatInfo',
+                    $ref: CatInfo.toRef(),
                 },
                 {
-                    $ref: '#DogInfo',
+                    $ref: DogInfo.toRef(),
                 },
-                */
-                CatInfo.schema,
-                DogInfo.schema,
             ],
         },
     },

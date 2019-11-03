@@ -26,6 +26,7 @@ import {
     Update,
 } from './operation';
 import { JSONSchemaResource } from './resource';
+import NamingStrategy from './naming';
 import {
     Info,
     buildSpec,
@@ -48,6 +49,7 @@ export {
     InternalServerError,
     JSONSchemaResource,
     Namespace,
+    NamingStrategy,
     NotFound,
     Query,
     Replace,

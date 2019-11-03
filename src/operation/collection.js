@@ -1,5 +1,4 @@
-import { snakeCase } from 'lodash';
-
+import NamingStrategy from '../naming';
 import Operation from './operation';
 
 /* A `CollectionOperation` encapsulates a REST-oriented route that operates
@@ -9,8 +8,10 @@ import Operation from './operation';
  */
 export default class CollectionOperation extends Operation {
     constructor({ resourceName, ...more }) {
+        const namingStrategy = more.namingStrategy || new NamingStrategy();
         super({
-            path: `/${snakeCase(resourceName)}`,
+            namingStrategy,
+            path: namingStrategy.toCollectionPath(resourceName),
             tags: [
                 resourceName,
             ],

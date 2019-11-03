@@ -1,6 +1,6 @@
 /* Define how resources collections will paginate.
  */
-export default class DefaultPagingStrategy {
+export default class PagingStrategy {
     constructor(options = {}) {
         const {
             hasCount = true,

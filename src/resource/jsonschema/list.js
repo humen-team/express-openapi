@@ -15,7 +15,7 @@ export default class JSONSchemaListResource extends JSONSchemaResource {
         const { config } = item;
         const { namingStrategy, pagingStrategy } = config;
         const schema = {
-            id: namingStrategy.toListName(item.id),
+            id: namingStrategy.toListResourceId(item.id),
             type: 'object',
             properties: {
                 items: {

@@ -19,6 +19,7 @@ export default class Operation {
             input,
             method,
             middleware,
+            namingStrategy,
             operationId,
             output,
             path,
@@ -35,6 +36,7 @@ export default class Operation {
         this.operationId = operationId || this.constructor.defaultOperationId;
         this.output = output;
         this.middleware = middleware || [];
+        this.namingStrategy = namingStrategy;
         this.produces = produces;
         this.statusCode = statusCode || OK;
         this.tags = tags;
