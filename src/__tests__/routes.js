@@ -1,4 +1,4 @@
-/* Example routes.
+/* Routes used by the sample app.
  */
 import { readFileSync } from 'fs';
 

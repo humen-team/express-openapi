@@ -1,9 +1,11 @@
+/* Validate command and query operations.
+ */
 import request from 'supertest';
 
 import createApp from './app';
 
 describe('app', () => {
-    describe('CommandOperation', () => {
+    describe('Command', () => {
         it('returns 200', async () => {
             const app = createApp();
             const response = await request(app).post('/command').send({
@@ -16,7 +18,7 @@ describe('app', () => {
         });
     });
 
-    describe('QueryOperation', () => {
+    describe('Query', () => {
         it('returns 200', async () => {
             const app = createApp();
             const response = await request(app).get('/query').query({

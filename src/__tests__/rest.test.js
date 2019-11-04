@@ -1,4 +1,4 @@
-/* Example express app.
+/* Validate RESTful operations.
  */
 import request from 'supertest';
 

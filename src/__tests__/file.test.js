@@ -1,3 +1,5 @@
+/* Validate file operations.
+ */
 import { readFileSync } from 'fs';
 
 import request from 'supertest';

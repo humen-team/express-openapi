@@ -1,14 +1,9 @@
-/* Create an example express app.
+/* Sample express application with a representative sample of operations.
  */
 import cors from 'cors';
 import express from 'express';
 
-import {
-    Command,
-    Namespace,
-    Query,
-    serveSpec,
-} from '..';
+import { Command, Namespace, Query, serveSpec } from '..';
 import routes from './routes';
 import {
     CommandInput,
@@ -41,6 +36,7 @@ export function newApp({ operations }) {
 }
 
 export default function createApp() {
+    // RESTful operations
     const foo = new Namespace('foo')
         .create({ input: CreateFoo, output: Foo, route: routes.create })
         .count({ input: CountFoo, route: routes.count })
@@ -50,11 +46,13 @@ export default function createApp() {
         .search({ input: SearchFoo, output: Foo.toList(), route: routes.search })
         .update({ input: UpdateFoo, output: Foo, route: routes.update });
 
+    // file operations
     const fooFile = new Namespace('fooFile')
         .createFile({ output: FooFile, route: routes.createFile })
         .replaceFile({ output: FooFile, route: routes.replaceFile })
         .retrieveFile({ route: routes.retrieveFile, produces: 'image/png' });
 
+    // command and query
     const command = new Command({
         input: CommandInput,
         operationId: 'mycommand',
