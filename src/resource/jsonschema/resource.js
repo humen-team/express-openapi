@@ -23,9 +23,7 @@ export default class JSONSchemaResource extends Resource {
         // default to stricter validation
         const { additionalProperties, type } = schema;
         this.schema = {
-            additionalProperties: additionalProperties === undefined
-                ? false
-                : additionalProperties,
+            additionalProperties: additionalProperties || false,
             type: type || 'object',
             ...schema,
         };
@@ -117,7 +115,7 @@ export default class JSONSchemaResource extends Resource {
      */
     static all(options = {}) {
         const {
-            additionalProperties,
+            additionalProperties = false,
             id = this.id,
             properties = {},
         } = options;
@@ -164,7 +162,7 @@ export default class JSONSchemaResource extends Resource {
      */
     merge(options = {}) {
         const {
-            additionalProperties,
+            additionalProperties = false,
             id = this.id,
             properties = {},
             required = [],
@@ -182,7 +180,7 @@ export default class JSONSchemaResource extends Resource {
      */
     omit(options = {}) {
         const {
-            additionalProperties,
+            additionalProperties = false,
             id = this.id,
             properties = [],
             required,
@@ -200,7 +198,7 @@ export default class JSONSchemaResource extends Resource {
      */
     pick(options = {}) {
         const {
-            additionalProperties,
+            additionalProperties = false,
             id = this.id,
             properties = [],
             required,
