@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`polymorphic schema search returns a list of parents with references to children 1`] = `
+Object {
+  "count": 3,
+  "items": Array [
+    Object {
+      "child": Object {
+        "grandchild": Object {
+          "name": "grandchild",
+        },
+        "name": "childWithGrandchild",
+      },
+      "name": "parentWithChildAndGrandchild",
+    },
+    Object {
+      "child": Object {
+        "grandchild": null,
+        "name": "child",
+      },
+      "name": "parentWithChild",
+    },
+    Object {
+      "child": null,
+      "name": "parent",
+    },
+  ],
+}
+`;
