@@ -36,6 +36,7 @@ export default class Operation {
             output,
             path,
             produces,
+            requestHeaders,
             route,
             statusCode,
             tags,
@@ -50,6 +51,7 @@ export default class Operation {
         this.middleware = middleware || [];
         this.namingStrategy = namingStrategy;
         this.produces = produces;
+        this.requestHeaders = requestHeaders || {};
         this.statusCode = statusCode || OK;
         this.tags = tags;
 
@@ -174,7 +176,7 @@ export default class Operation {
             openapiVersion === OPENAPI_2_0 ? this.listBodyParameters() : [],
             this.listQueryParameters(),
             this.listPathParameters(),
-            // NB: we don't currently support header parameters to operations
+            this.listHeaderParameters(),
         );
     }
 
@@ -184,6 +186,15 @@ export default class Operation {
 
     listPathParameters() { // eslint-disable-line class-methods-use-this
         return [];
+    }
+
+    listHeaderParameters() {
+        return Object.keys(this.requestHeaders).map(
+            (name) => Parameter.forHeader({
+                name,
+                type: this.requestHeaders[name],
+            }),
+        );
     }
 
     listQueryParameters() {

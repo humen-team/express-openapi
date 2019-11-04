@@ -55,6 +55,15 @@ export default class Parameter {
         });
     }
 
+    static forHeader({ name, required, type }) {
+        return new Parameter({
+            name,
+            parameterType: 'header',
+            required: required || false,
+            type: type || 'string',
+        });
+    }
+
     static forQuery({ input, name }) {
         return new Parameter({
             name,

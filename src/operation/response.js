@@ -41,7 +41,7 @@ export default class Response {
                         },
                     }
                     : undefined,
-                headers: this.headers
+                headers: this.headers && Object.keys(this.headers).length
                     ? mapValues(this.headers, (type) => ({ schema: { type } }))
                     : undefined,
             },
