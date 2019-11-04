@@ -2,6 +2,15 @@ import pickVersion from '../versions';
 
 import { OPENAPI_2_0 } from '../constants';
 
+function normalize(type) {
+    if (Array.isArray(type)) {
+        return type.filter(
+            (value) => !!value,
+        )[0];
+    }
+    return type || 'string';
+}
+
 /* Defines an OpenAPI parameter.
  */
 export default class Parameter {
@@ -51,7 +60,7 @@ export default class Parameter {
             name,
             parameterType: 'query',
             required: input.required && input.required.includes(name),
-            type: input.properties[name].type,
+            type: normalize(input.properties[name].type),
         });
     }
 

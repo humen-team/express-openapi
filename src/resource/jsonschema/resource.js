@@ -61,7 +61,7 @@ export default class JSONSchemaResource extends Resource {
         return {
             // omit the `id` field
             properties: buildOpenAPI(properties, openapiVersion, this.id),
-            required,
+            required: (!required || !required.length) ? undefined : required,
             type,
         };
     }
