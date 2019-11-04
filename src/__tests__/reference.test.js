@@ -3,6 +3,7 @@ import request from 'supertest';
 import { Namespace } from '..';
 import { newApp } from './app';
 import { Parent } from './reference';
+import validator, { openapi2, openapi3 } from './validate';
 
 function search() {
     return {
@@ -32,7 +33,7 @@ function search() {
     };
 }
 
-describe('polymorphic schema', () => {
+describe('schema references', () => {
     const operation = new Namespace('Parent')
         .search({ output: Parent.toList(), route: search });
 
@@ -44,6 +45,24 @@ describe('polymorphic schema', () => {
 
             expect(response.statusCode).toEqual(200);
             expect(response.body.items.length).toEqual(3);
+            expect(response.body).toMatchSnapshot();
+        });
+    });
+
+    describe('openapi 2.0', () => {
+        it('is valid', async () => {
+            const response = await request(app).get('/openapi/2.0');
+            expect(response.statusCode).toEqual(200);
+            validator.validate(response.body, openapi2, { throwError: true });
+            expect(response.body).toMatchSnapshot();
+        });
+    });
+
+    describe('openapi 3.0.0', () => {
+        it('is valid', async () => {
+            const response = await request(app).get('/openapi/3.0.0');
+            expect(response.statusCode).toEqual(200);
+            validator.validate(response.body, openapi3, { throwError: true });
             expect(response.body).toMatchSnapshot();
         });
     });

@@ -116,8 +116,13 @@ export default class JSONSchemaResource extends Resource {
     /* Create a resource, requiring all properties.
      */
     static all(options = {}) {
-        const { id = this.id, properties = {} } = options;
+        const {
+            additionalProperties,
+            id = this.id,
+            properties = {},
+        } = options;
         return new JSONSchemaResource({
+            additionalProperties,
             id,
             properties,
             required: Object.keys(properties),
@@ -125,15 +130,47 @@ export default class JSONSchemaResource extends Resource {
         });
     }
 
+    /* Create a resource that is a choice of other resources.
+     *
+     * OpenAPI 2.0 uses JSONSchema draft-04, which only supports the `oneOf` or `allOf` qualifiers
+     * in the root of a schema (and not within property declarations). The workaround is to create
+     * a new choice type that includes the *union* of all properties and use it as a reference.
+     */
+    static choice(options = {}) {
+        const {
+            additionalProperties = false,
+            exclusive = true,
+            id = this.id,
+            resources = [],
+        } = options;
+
+        return new JSONSchemaResource({
+            additionalProperties,
+            id,
+            properties: resources.reduce(
+                (obj, resource) => ({
+                    ...obj,
+                    ...resource.properties,
+                }),
+                {},
+            ),
+            [exclusive ? 'oneOf' : 'anyOf']: resources.map(
+                (resource) => ({ $ref: resource.toRef() }),
+            ),
+        });
+    }
+
     /* Add some properties to a resource.
      */
     merge(options = {}) {
         const {
+            additionalProperties,
             id = this.id,
             properties = {},
             required = [],
         } = options;
         return new JSONSchemaResource({
+            additionalProperties,
             id,
             properties: merge(properties, this.properties),
             required: union(required, this.required),
@@ -145,11 +182,13 @@ export default class JSONSchemaResource extends Resource {
      */
     omit(options = {}) {
         const {
+            additionalProperties,
             id = this.id,
             properties = [],
             required,
         } = options;
         return new JSONSchemaResource({
+            additionalProperties,
             id,
             properties: omit(this.properties, properties),
             required: required || difference(this.required, properties),
@@ -161,11 +200,13 @@ export default class JSONSchemaResource extends Resource {
      */
     pick(options = {}) {
         const {
+            additionalProperties,
             id = this.id,
             properties = [],
             required,
         } = options;
         return new JSONSchemaResource({
+            additionalProperties,
             id,
             properties: pick(this.properties, properties),
             required: isUndefined(required) ? intersection(this.required, properties) : required,

@@ -3,6 +3,7 @@ import request from 'supertest';
 import { Namespace } from '..';
 import { newApp } from './app';
 import { Pet, PetType } from './polymorphic';
+import validator, { openapi2, openapi3 } from './validate';
 
 function create(pet) {
     return pet;
@@ -118,6 +119,34 @@ describe('polymorphic schema', () => {
                 type: PetType.dog,
             });
             expect(response.statusCode).toEqual(422);
+        });
+        it('validates unicorns', async () => {
+            const response = await request(app).post('/pet').send({
+                info: {
+                    // we intentionally do not UnicornInfo
+                },
+                name: 'Amalthea',
+                type: PetType.unicorn,
+            });
+            expect(response.statusCode).toEqual(422);
+        });
+    });
+
+    describe('openapi 2.0', () => {
+        it('is valid', async () => {
+            const response = await request(app).get('/openapi/2.0');
+            expect(response.statusCode).toEqual(200);
+            validator.validate(response.body, openapi2, { throwError: true });
+            expect(response.body).toMatchSnapshot();
+        });
+    });
+
+    describe('openapi 3.0.0', () => {
+        it('is valid', async () => {
+            const response = await request(app).get('/openapi/3.0.0');
+            expect(response.statusCode).toEqual(200);
+            validator.validate(response.body, openapi3, { throwError: true });
+            expect(response.body).toMatchSnapshot();
         });
     });
 });
