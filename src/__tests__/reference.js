@@ -2,8 +2,8 @@
  */
 import { JSONSchemaResource } from '..';
 
-export const GrandChild = JSONSchemaResource.all({
-    id: 'GrandChild',
+export const Grandchild = JSONSchemaResource.all({
+    id: 'Grandchild',
     properties: {
         name: {
             type: 'string',
@@ -17,7 +17,7 @@ export const Child = JSONSchemaResource.all({
         grandchild: {
             anyOf: [
                 {
-                    $ref: GrandChild.toRef(),
+                    $ref: Grandchild.toRef(),
                 },
                 {
                     type: null,

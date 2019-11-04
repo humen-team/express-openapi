@@ -1,6 +1,8 @@
 import {
     difference,
+    flatten,
     intersection,
+    isPlainObject,
     isUndefined,
     merge,
     omit,
@@ -9,6 +11,7 @@ import {
 } from 'lodash';
 
 import UnprocessableEntity from '../../errors/unprocessable_entity';
+import Reference from '../reference';
 import Resource from '../resource';
 import buildOpenAPI from './builder';
 import mapSchema from './map';
@@ -90,6 +93,23 @@ export default class JSONSchemaResource extends Resource {
         // avoid circular dependency by deferring import
         const JSONSchemaResourceList = require('./list').default; // eslint-disable-line global-require
         return new JSONSchemaResourceList(this);
+    }
+
+    listRefs() {
+        function findRefs(object) {
+            if (object instanceof Reference) {
+                return [object];
+            }
+            if (Array.isArray(object)) {
+                return flatten(object.map(findRefs));
+            }
+            if (isPlainObject(object)) {
+                return flatten(Object.values(object).map(findRefs));
+            }
+            return [];
+        }
+
+        return findRefs(this.schema);
     }
 
     /* Validate data against this JSONSchema schema.

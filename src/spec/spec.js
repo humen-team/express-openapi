@@ -1,5 +1,5 @@
 import { OK } from 'http-status-codes';
-import { concat, merge } from 'lodash';
+import { concat, flatten, merge } from 'lodash';
 
 import { DEFAULT_OPENAPI_VERSION, OPENAPI_2_0, OPENAPI_3_0_0 } from '../constants';
 import pickVersion from '../versions';
@@ -84,36 +84,39 @@ export default class Spec {
     }
 
     buildDefinitions(openapiVersion) {
+        // build a list of inputs, outputs, and error resources
+        const resources = concat(
+            this.listInputResources(),
+            this.listOutputResources(),
+            this.listErrorResources(),
+        );
+
+        // expand to include references
+        const referencedResources = flatten(
+            concat(
+                resources.map(
+                    (resource) => {
+                        const refs = resource.listRefs();
+                        return refs.map(
+                            (ref) => ref.resource,
+                        );
+                    },
+                ),
+            ),
+        );
+
+        // convert this list to a dictionary by id
         return merge(
             {},
-            ...concat(
-                this.operations.filter(
-                    ({ input, method }) => !!input && method !== 'GET',
-                ).map(
-                    ({ input }) => ({
-                        [input.id]: input.build(openapiVersion),
-                    }),
-                ),
+            ...resources.map(
+                (resource) => ({
+                    [resource.id]: resource.build(openapiVersion),
+                }),
             ),
-            ...concat(
-                // NB: we don't currently enumerate subordinate resources (e.g. for lists)
-                // when operating on parent resources; we probably should
-                this.operations.filter(
-                    ({ output }) => !!output,
-                ).map(
-                    ({ output }) => ({
-                        [output.id]: output.build(openapiVersion),
-                    }),
-                ),
-            ),
-            ...concat(
-                this.operations.filter(
-                    ({ error }) => !!error,
-                ).map(
-                    ({ error }) => ({
-                        [error.id]: error.build(openapiVersion),
-                    }),
-                ),
+            ...referencedResources.map(
+                (resource) => ({
+                    [resource.id]: resource.build(openapiVersion),
+                }),
             ),
         );
     }
@@ -128,6 +131,30 @@ export default class Spec {
                     },
                 }),
             ),
+        );
+    }
+
+    listInputResources() {
+        return this.operations.filter(
+            ({ input, method }) => !!input && method !== 'GET',
+        ).map(
+            ({ input }) => input,
+        );
+    }
+
+    listOutputResources() {
+        return this.operations.filter(
+            ({ output }) => !!output,
+        ).map(
+            ({ output }) => output,
+        );
+    }
+
+    listErrorResources() {
+        return this.operations.filter(
+            ({ error }) => !!error,
+        ).map(
+            ({ error }) => error,
         );
     }
 }

@@ -40,8 +40,14 @@ export default class Resource {
 
     /* Create a reference to this resource.
      */
-    toRef() { // eslint-disable-line class-methods-use-this
+    toRef() {
         return new Reference(this);
+    }
+
+    /* List references.
+     */
+    listRefs() { // eslint-disable-line class-methods-use-this
+        return [];
     }
 
     /* Validate data according to this resource's definition, returning the valid data.

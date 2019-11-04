@@ -33,7 +33,6 @@ function dereference(object, validator, path = '') {
                     // not a valid ref
                     throw new Error('Expected $ref to be instance of Reference; did you use Resource.toRef()?');
                 }
-
                 // use '/foo' as the generic reference path
                 const refId = value.id;
 

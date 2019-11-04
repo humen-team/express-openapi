@@ -43,6 +43,19 @@ Object {
       ],
       "type": "object",
     },
+    "PetInfo": Object {
+      "properties": Object {
+        "bestFriend": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "lives": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "type": "object",
+    },
     "PetList": Object {
       "properties": Object {
         "count": Object {
@@ -189,6 +202,19 @@ Object {
           "type",
           "info",
         ],
+        "type": "object",
+      },
+      "PetInfo": Object {
+        "properties": Object {
+          "bestFriend": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "lives": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
         "type": "object",
       },
       "PetList": Object {

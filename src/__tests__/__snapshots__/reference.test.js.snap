@@ -17,6 +17,27 @@ Object {
       },
       "type": "object",
     },
+    "Parent": Object {
+      "properties": Object {
+        "child": Object {
+          "anyOf": Array [
+            Object {
+              "$ref": "#/definitions/Child",
+            },
+            Object {},
+          ],
+        },
+        "name": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "child",
+        "name",
+      ],
+      "type": "object",
+    },
     "ParentList": Object {
       "properties": Object {
         "count": Object {
@@ -101,6 +122,27 @@ Object {
             "type": "integer",
           },
         },
+        "type": "object",
+      },
+      "Parent": Object {
+        "properties": Object {
+          "child": Object {
+            "anyOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Child",
+              },
+              Object {},
+            ],
+          },
+          "name": Object {
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "child",
+          "name",
+        ],
         "type": "object",
       },
       "ParentList": Object {
