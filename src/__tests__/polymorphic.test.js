@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import { Namespace } from '..';
 import { newApp } from './app';
-import { Pet, PetType } from './fixtures';
+import { Pet, PetType } from './polymorphic';
 
 function create(pet) {
     return pet;

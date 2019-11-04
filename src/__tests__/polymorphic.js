@@ -1,3 +1,5 @@
+/* Define a type (Pet) with a polymorphic property (CatInfo/DogInfo).
+ */
 import { JSONSchemaResource } from '..';
 
 export const PetType = Object.freeze({
