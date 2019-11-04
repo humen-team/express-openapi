@@ -8,14 +8,12 @@ import Parameter from './parameter';
  * That is, it operates on a single instance of `foo` via the path `/foo/:fooId`.
  */
 export default class InstanceOperation extends Operation {
-    constructor({ resourceName, suffix, ...more }) {
+    constructor({ resourceName, suffix, tags, ...more }) {
         const namingStrategy = more.namingStrategy || new NamingStrategy();
         super({
             namingStrategy,
             path: namingStrategy.toInstancePath(resourceName, suffix),
-            tags: [
-                resourceName,
-            ],
+            tags: tags || [resourceName],
             ...more,
         });
         this.resourceName = resourceName;

@@ -7,14 +7,12 @@ import Operation from './operation';
  * That is, it operates on the collection of all `foo` via the path `/foo`
  */
 export default class CollectionOperation extends Operation {
-    constructor({ resourceName, ...more }) {
+    constructor({ resourceName, tags, ...more }) {
         const namingStrategy = more.namingStrategy || new NamingStrategy();
         super({
             namingStrategy,
             path: namingStrategy.toCollectionPath(resourceName),
-            tags: [
-                resourceName,
-            ],
+            tags: tags || [resourceName],
             ...more,
         });
         this.resourceName = resourceName;
