@@ -1,6 +1,186 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`polymorphic schema search returns a list of parents with references to children 1`] = `
+exports[`schema references openapi 2.0 is valid 1`] = `
+Object {
+  "basePath": "/",
+  "definitions": Object {
+    "Error": Object {
+      "properties": Object {
+        "message": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "status": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "type": "object",
+    },
+    "ParentList": Object {
+      "properties": Object {
+        "count": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "items": Object {
+          "items": Object {
+            "$ref": "#/definitions/Parent",
+          },
+          "type": "array",
+          "x-nullable": false,
+        },
+        "limit": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "offset": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "items",
+        "count",
+      ],
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "paths": Object {
+    "/parent": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "ParentList as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/ParentList",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "Parent",
+        ],
+      },
+    },
+  },
+  "schemes": Array [
+    "http",
+  ],
+  "swagger": "2.0",
+}
+`;
+
+exports[`schema references openapi 3.0.0 is valid 1`] = `
+Object {
+  "components": Object {
+    "schemas": Object {
+      "Error": Object {
+        "properties": Object {
+          "message": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "status": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+      "ParentList": Object {
+        "properties": Object {
+          "count": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "items": Object {
+            "items": Object {
+              "$ref": "#/components/schemas/Parent",
+            },
+            "nullable": false,
+            "type": "array",
+          },
+          "limit": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "offset": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+        "required": Array [
+          "items",
+          "count",
+        ],
+        "type": "object",
+      },
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "openapi": "3.0.0",
+  "paths": Object {
+    "/parent": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/ParentList",
+                },
+              },
+            },
+            "description": "ParentList as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "Parent",
+        ],
+      },
+    },
+  },
+  "servers": Array [
+    Object {
+      "url": "/",
+    },
+  ],
+}
+`;
+
+exports[`schema references search returns a list of parents with references to children 1`] = `
 Object {
   "count": 3,
   "items": Array [

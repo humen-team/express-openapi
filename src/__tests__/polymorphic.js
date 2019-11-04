@@ -5,6 +5,7 @@ import { JSONSchemaResource } from '..';
 export const PetType = Object.freeze({
     cat: 'cat',
     dog: 'dog',
+    unicorn: 'unicorn',
 });
 
 export const CatInfo = JSONSchemaResource.all({
@@ -25,6 +26,14 @@ export const DogInfo = JSONSchemaResource.all({
     },
 });
 
+export const PetInfo = JSONSchemaResource.choice({
+    id: 'PetInfo',
+    resources: [
+        CatInfo,
+        DogInfo,
+    ],
+});
+
 export const Pet = JSONSchemaResource.all({
     id: 'Pet',
     properties: {
@@ -36,14 +45,7 @@ export const Pet = JSONSchemaResource.all({
             enum: Object.keys(PetType).sort(),
         },
         info: {
-            anyOf: [
-                {
-                    $ref: CatInfo.toRef(),
-                },
-                {
-                    $ref: DogInfo.toRef(),
-                },
-            ],
+            $ref: PetInfo.toRef(),
         },
     },
 });

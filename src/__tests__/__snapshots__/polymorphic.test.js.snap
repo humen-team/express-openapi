@@ -1,0 +1,308 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`polymorphic schema openapi 2.0 is valid 1`] = `
+Object {
+  "basePath": "/",
+  "definitions": Object {
+    "Error": Object {
+      "properties": Object {
+        "message": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "status": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "type": "object",
+    },
+    "Pet": Object {
+      "properties": Object {
+        "info": Object {
+          "$ref": "#/definitions/PetInfo",
+        },
+        "name": Object {
+          "type": "string",
+          "x-nullable": false,
+        },
+        "type": Object {
+          "enum": Array [
+            "cat",
+            "dog",
+            "unicorn",
+          ],
+          "type": "string",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "name",
+        "type",
+        "info",
+      ],
+      "type": "object",
+    },
+    "PetList": Object {
+      "properties": Object {
+        "count": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "items": Object {
+          "items": Object {
+            "$ref": "#/definitions/Pet",
+          },
+          "type": "array",
+          "x-nullable": false,
+        },
+        "limit": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+        "offset": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
+      },
+      "required": Array [
+        "items",
+        "count",
+      ],
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "paths": Object {
+    "/pet": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "PetList as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/PetList",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "pet",
+        ],
+      },
+      "post": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "create",
+        "parameters": Array [
+          Object {
+            "in": "body",
+            "name": "pet",
+            "required": true,
+            "schema": Object {
+              "$ref": "#/definitions/Pet",
+            },
+          },
+        ],
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "201": Object {
+            "description": "Pet as JSON",
+            "schema": Object {
+              "$ref": "#/definitions/Pet",
+            },
+          },
+          "default": Object {
+            "description": "An error occurred",
+            "schema": Object {
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+  },
+  "schemes": Array [
+    "http",
+  ],
+  "swagger": "2.0",
+}
+`;
+
+exports[`polymorphic schema openapi 3.0.0 is valid 1`] = `
+Object {
+  "components": Object {
+    "schemas": Object {
+      "Error": Object {
+        "properties": Object {
+          "message": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "status": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+      "Pet": Object {
+        "properties": Object {
+          "info": Object {
+            "$ref": "#/components/schemas/PetInfo",
+          },
+          "name": Object {
+            "nullable": false,
+            "type": "string",
+          },
+          "type": Object {
+            "enum": Array [
+              "cat",
+              "dog",
+              "unicorn",
+            ],
+            "nullable": false,
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "name",
+          "type",
+          "info",
+        ],
+        "type": "object",
+      },
+      "PetList": Object {
+        "properties": Object {
+          "count": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "items": Object {
+            "items": Object {
+              "$ref": "#/components/schemas/Pet",
+            },
+            "nullable": false,
+            "type": "array",
+          },
+          "limit": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+          "offset": Object {
+            "nullable": false,
+            "type": "integer",
+          },
+        },
+        "required": Array [
+          "items",
+          "count",
+        ],
+        "type": "object",
+      },
+    },
+  },
+  "info": Object {
+    "description": "REST API",
+    "title": "REST API",
+    "version": "0.1.0",
+  },
+  "openapi": "3.0.0",
+  "paths": Object {
+    "/pet": Object {
+      "get": Object {
+        "operationId": "search",
+        "parameters": Array [],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/PetList",
+                },
+              },
+            },
+            "description": "PetList as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "pet",
+        ],
+      },
+      "post": Object {
+        "operationId": "create",
+        "parameters": Array [],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/Pet",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": Object {
+          "201": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+              },
+            },
+            "description": "Pet as JSON",
+          },
+          "default": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Error",
+                },
+              },
+            },
+            "description": "An error occurred",
+          },
+        },
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+  },
+  "servers": Array [
+    Object {
+      "url": "/",
+    },
+  ],
+}
+`;
