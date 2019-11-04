@@ -8,6 +8,18 @@ import Response from './response';
 import { JSONSchemaResource } from '../resource';
 import { Handler } from '../handler';
 
+function normalizeProduces(produces) {
+    if (!produces) {
+        return [DEFAULT_PRODUCES];
+    }
+
+    if (Array.isArray(produces)) {
+        return produces;
+    }
+
+    return [produces];
+}
+
 /* An `Operation` encapsulates an HTTP operation, along with its inputs and outputs.
  */
 export default class Operation {
@@ -112,7 +124,7 @@ export default class Operation {
             description: this.description,
             operationId: this.operationId,
             parameters: this.buildParameters(openapiVersion),
-            produces: this.hasResponseBody ? [this.produces || DEFAULT_PRODUCES] : undefined,
+            produces: this.hasResponseBody ? normalizeProduces(this.produces) : undefined,
             responses: this.buildResponses(openapiVersion),
             tags: this.tags,
         };
