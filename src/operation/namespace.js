@@ -18,7 +18,8 @@ import Update from './update';
 /* A namespace is a collection of operations under the same resource.
  */
 export default class Namespace {
-    constructor(resourceName, ...middleware) {
+    constructor(resourceName, options = {}) {
+        const { middleware } = options;
         this.resourceName = resourceName;
         this.middleware = middleware || [];
         this.operations = [];
@@ -27,6 +28,11 @@ export default class Namespace {
 
     register(app) {
         app.use(...this.middleware, this.router);
+    }
+
+    using(...middleware) {
+        this.middleware.push(...middleware);
+        return this;
     }
 
     add(Operation, options) {
