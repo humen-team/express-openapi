@@ -29,6 +29,7 @@ import { JSONSchemaResource } from './resource';
 import NamingStrategy from './naming';
 import {
     Info,
+    Server,
     buildSpec,
     serveSpec,
 } from './spec';
@@ -57,6 +58,7 @@ export {
     Retrieve,
     RetrieveFile,
     Search,
+    Server,
     Update,
     Unauthorized,
     UnprocessableEntity,

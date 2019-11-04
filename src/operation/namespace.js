@@ -18,11 +18,12 @@ import Update from './update';
 /* A namespace is a collection of operations under the same resource.
  */
 export default class Namespace {
-    constructor(resourceName, options = {}) {
-        const { middleware } = options;
+    constructor(resourceName, extra = {}) {
+        const { middleware, ...options } = extra;
         this.resourceName = resourceName;
         this.middleware = middleware || [];
         this.operations = [];
+        this.options = options;
         this.tags = undefined;
         this.router = new Router();
     }
@@ -31,11 +32,15 @@ export default class Namespace {
         app.use(...this.middleware, this.router);
     }
 
+    /* Append middlware to be used for each operation.
+     */
     using(...middleware) {
         this.middleware.push(...middleware);
         return this;
     }
 
+    /* Set tags to be used for each operation.
+     */
     tag(...tags) {
         this.tags = tags;
         return this;
@@ -45,6 +50,7 @@ export default class Namespace {
         const operation = new Operation({
             resourceName: this.resourceName,
             tags: this.tags,
+            ...this.options,
             ...options,
         });
 
