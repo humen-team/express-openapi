@@ -23,6 +23,7 @@ export default class Namespace {
         this.resourceName = resourceName;
         this.middleware = middleware || [];
         this.operations = [];
+        this.tags = undefined;
         this.router = new Router();
     }
 
@@ -35,9 +36,15 @@ export default class Namespace {
         return this;
     }
 
+    tag(...tags) {
+        this.tags = tags;
+        return this;
+    }
+
     add(Operation, options) {
         const operation = new Operation({
             resourceName: this.resourceName,
+            tags: this.tags,
             ...options,
         });
 
