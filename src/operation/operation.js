@@ -29,6 +29,7 @@ export default class Operation {
             description,
             error,
             input,
+            logger,
             method,
             middleware,
             namingStrategy,
@@ -48,6 +49,7 @@ export default class Operation {
         this.input = input;
         this.operationId = operationId || this.constructor.defaultOperationId;
         this.output = output;
+        this.logger = logger;
         this.middleware = middleware || [];
         this.namingStrategy = namingStrategy;
         this.produces = produces;
@@ -75,6 +77,10 @@ export default class Operation {
      */
     register(app) {
         const handler = this.constructor.createHandler(this);
+        if (this.logger) {
+            const name = `${this.operationId} ${this.tags[0]}`;
+            this.logger.info(`Registering ${name} at ${this.method.toLowerCase()} ${this.path}`);
+        }
         app[this.method.toLowerCase()](this.path, ...this.middleware, handler.handle.bind(handler));
     }
 
