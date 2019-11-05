@@ -15,14 +15,7 @@ export const Child = JSONSchemaResource.all({
     id: 'Child',
     properties: {
         grandchild: {
-            anyOf: [
-                {
-                    $ref: Grandchild.toRef(),
-                },
-                {
-                    type: null,
-                },
-            ],
+            $ref: Grandchild.toRef(),
         },
         name: {
             type: 'string',
@@ -34,18 +27,7 @@ export const Parent = JSONSchemaResource.all({
     id: 'Parent',
     properties: {
         child: {
-            anyOf: [
-                {
-                    $ref: Child.toRef(),
-                },
-                {
-                    // XXX The jsonschema library has a bug here that I need to track down.
-                    // If we pass `type: null` and have grandchildren, we get an error in which
-                    // the library tries to deference the `id` of the `null` schema.
-                    //
-                    // This only happens when grandchildren are involved, not children alone.
-                },
-            ],
+            $ref: Child.toRef(),
         },
         name: {
             type: 'string',

@@ -34,7 +34,7 @@ export default function mapSchema(value, schema, func, path = '') {
         );
     }
 
-    if (type === 'object') {
+    if (type && type === 'object') {
         return mapValues(
             value,
             (child, key) => mapSchema(

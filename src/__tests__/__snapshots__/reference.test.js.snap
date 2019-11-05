@@ -20,12 +20,7 @@ Object {
     "Parent": Object {
       "properties": Object {
         "child": Object {
-          "anyOf": Array [
-            Object {
-              "$ref": "#/definitions/Child",
-            },
-            Object {},
-          ],
+          "$ref": "#/definitions/Child",
         },
         "name": Object {
           "type": "string",
@@ -127,12 +122,7 @@ Object {
       "Parent": Object {
         "properties": Object {
           "child": Object {
-            "anyOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Child",
-              },
-              Object {},
-            ],
+            "$ref": "#/components/schemas/Child",
           },
           "name": Object {
             "nullable": false,
@@ -234,17 +224,6 @@ Object {
         "name": "childWithGrandchild",
       },
       "name": "parentWithChildAndGrandchild",
-    },
-    Object {
-      "child": Object {
-        "grandchild": null,
-        "name": "child",
-      },
-      "name": "parentWithChild",
-    },
-    Object {
-      "child": null,
-      "name": "parent",
     },
   ],
 }
