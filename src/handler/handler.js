@@ -35,6 +35,7 @@ export default class Handler {
         hasResponseBody,
         identifierName,
         input,
+        logger,
         output,
         route,
         statusCode,
@@ -44,6 +45,7 @@ export default class Handler {
         this.hasResponseBody = hasResponseBody;
         this.identifierName = identifierName;
         this.input = input;
+        this.logger = logger;
         this.output = output;
         this.route = route;
         this.statusCode = statusCode;
@@ -106,6 +108,21 @@ export default class Handler {
      */
     async processError(error, req, res) {
         const status = this.processErrorStatus(error);
+
+        /* Request level errors are not automatically problematic; it's perfectly normal
+         * for APIs to return 4XX codes due to client errors or business logic constraints
+         * and these conditions should not automatically clutter logs.
+         *
+         * However, 500 errors are pretty much the definition of a mistake in the server
+         * and should be subsequently investigated (though not necessarily immediately).
+         *
+         * Hence, log these at `warn`, but not `error`.
+         */
+        if (this.logger && status === INTERNAL_SERVER_ERROR) {
+            const { method, originalUrl: url } = req;
+            // NB: use the winston 3.0 convention of passing the error object and metadata
+            this.logger.warn(error, { method, url });
+        }
         const resource = this.processErrorData(error);
         return res.status(status).send(resource);
     }

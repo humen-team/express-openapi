@@ -77,10 +77,6 @@ export default class Operation {
      */
     register(app) {
         const handler = this.constructor.createHandler(this);
-        if (this.logger) {
-            const name = `${this.operationId} ${this.tags[0]}`;
-            this.logger.info(`Registering ${name} at ${this.method.toLowerCase()} ${this.path}`);
-        }
         app[this.method.toLowerCase()](this.path, ...this.middleware, handler.handle.bind(handler));
     }
 
