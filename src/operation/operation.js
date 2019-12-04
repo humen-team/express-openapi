@@ -107,7 +107,7 @@ export default class Operation {
     /* Does this operation expect a request body?
      */
     get hasRequestBody() {
-        return this.input && this.method !== 'GET' && this.method !== 'HEAD';
+        return this.input && !['DELETE', 'GET', 'HEAD'].includes(this.method);
     }
 
     /* Does this operation expect a response body?
