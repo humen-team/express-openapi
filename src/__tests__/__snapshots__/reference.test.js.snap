@@ -6,6 +6,10 @@ Object {
   "definitions": Object {
     "Error": Object {
       "properties": Object {
+        "code": Object {
+          "type": "integer",
+          "x-nullable": false,
+        },
         "message": Object {
           "type": "string",
           "x-nullable": false,
@@ -108,6 +112,10 @@ Object {
     "schemas": Object {
       "Error": Object {
         "properties": Object {
+          "code": Object {
+            "nullable": false,
+            "type": "integer",
+          },
           "message": Object {
             "nullable": false,
             "type": "string",

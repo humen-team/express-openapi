@@ -90,6 +90,9 @@ export default class Operation {
         return new JSONSchemaResource({
             id: 'Error',
             properties: {
+                code: {
+                    type: 'integer',
+                },
                 message: {
                     type: 'string',
                 },
