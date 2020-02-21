@@ -8,6 +8,10 @@ export function parseType({ type }) {
 /* Cast a JSON value to a JSON Schema primitive type.
  */
 export function castInputValue(value, schema) {
+    if (value === null) {
+        return value;
+    }
+
     const { format } = schema;
     const type = parseType(schema);
 
