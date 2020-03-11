@@ -15,16 +15,16 @@ function search() {
         items: [{
             additionalProperty: 'ignore',
             info: {
+                name: 'felix',
                 lives: 9,
             },
-            name: 'Felix',
             type: PetType.cat,
         }, {
             additionalProperty: 'ignore',
             info: {
                 bestFriend: 'man',
+                name: 'rex',
             },
-            name: 'Rex',
             type: PetType.dog,
         }],
     };
@@ -48,11 +48,9 @@ describe('polymorphic schema', () => {
             expect(response.body.count).toEqual(2);
             expect(response.body.items.length).toEqual(2);
             expect(response.body.items[0].additionalProperty).not.toBeDefined();
-            expect(response.body.items[0].info).toEqual({ lives: 9 });
-            expect(response.body.items[0].name).toEqual('Felix');
+            expect(response.body.items[0].info).toEqual({ lives: 9, name: 'felix' });
             expect(response.body.items[0].type).toEqual(PetType.cat);
-            expect(response.body.items[1].info).toEqual({ bestFriend: 'man' });
-            expect(response.body.items[1].name).toEqual('Rex');
+            expect(response.body.items[1].info).toEqual({ bestFriend: 'man', name: 'rex' });
             expect(response.body.items[1].type).toEqual(PetType.dog);
         });
     });
@@ -62,8 +60,8 @@ describe('polymorphic schema', () => {
             const response = await request(app).post('/pet').send({
                 info: {
                     lives: 9,
+                    name: 'felix',
                 },
-                name: 'Felix',
                 type: PetType.cat,
             });
             expect(response.statusCode).toEqual(201);
@@ -72,8 +70,8 @@ describe('polymorphic schema', () => {
             const response = await request(app).post('/pet').send({
                 info: {
                     lives: 'nine',
+                    name: 'felix',
                 },
-                name: 'Felix',
                 type: PetType.cat,
             });
             expect(response.statusCode).toEqual(422);
@@ -83,8 +81,8 @@ describe('polymorphic schema', () => {
                 info: {
                     landsOnFeet: true,
                     lives: 9,
+                    name: 'felix',
                 },
-                name: 'Felix',
                 type: PetType.cat,
             });
             expect(response.statusCode).toEqual(422);
@@ -93,8 +91,8 @@ describe('polymorphic schema', () => {
             const response = await request(app).post('/pet').send({
                 info: {
                     bestFriend: 'man',
+                    name: 'rex',
                 },
-                name: 'Rex',
                 type: PetType.dog,
             });
             expect(response.statusCode).toEqual(201);
@@ -103,8 +101,8 @@ describe('polymorphic schema', () => {
             const response = await request(app).post('/pet').send({
                 info: {
                     bestFriend: true,
+                    name: 'rex',
                 },
-                name: 'Rex',
                 type: PetType.dog,
             });
             expect(response.statusCode).toEqual(422);
@@ -114,8 +112,8 @@ describe('polymorphic schema', () => {
                 info: {
                     chasesTail: true,
                     bestFriend: 'man',
+                    name: 'rex',
                 },
-                name: 'Rex',
                 type: PetType.dog,
             });
             expect(response.statusCode).toEqual(422);
@@ -123,9 +121,9 @@ describe('polymorphic schema', () => {
         it('validates unicorns', async () => {
             const response = await request(app).post('/pet').send({
                 info: {
-                    // we intentionally do not UnicornInfo
+                    // we intentionally do not define UnicornInfo
+                    name: 'amalthea',
                 },
-                name: 'Amalthea',
                 type: PetType.unicorn,
             });
             expect(response.statusCode).toEqual(422);

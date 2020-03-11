@@ -11,6 +11,10 @@ export const PetType = Object.freeze({
 export const CatInfo = JSONSchemaResource.all({
     id: 'CatInfo',
     properties: {
+        name: {
+            type: 'string',
+            enum: ['garfield', 'felix', 'sylvester'],
+        },
         lives: {
             type: 'integer',
         },
@@ -22,6 +26,10 @@ export const DogInfo = JSONSchemaResource.all({
     properties: {
         bestFriend: {
             type: 'string',
+        },
+        name: {
+            type: 'string',
+            enum: ['fido', 'odie', 'rex'],
         },
     },
 });
@@ -37,9 +45,6 @@ export const PetInfo = JSONSchemaResource.choice({
 export const Pet = JSONSchemaResource.all({
     id: 'Pet',
     properties: {
-        name: {
-            type: 'string',
-        },
         type: {
             type: 'string',
             enum: Object.keys(PetType).sort(),

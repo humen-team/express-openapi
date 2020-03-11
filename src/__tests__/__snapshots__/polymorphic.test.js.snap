@@ -26,10 +26,6 @@ Object {
         "info": Object {
           "$ref": "#/definitions/PetInfo",
         },
-        "name": Object {
-          "type": "string",
-          "x-nullable": false,
-        },
         "type": Object {
           "enum": Array [
             "cat",
@@ -41,7 +37,6 @@ Object {
         },
       },
       "required": Array [
-        "name",
         "type",
         "info",
       ],
@@ -55,6 +50,18 @@ Object {
         },
         "lives": Object {
           "type": "integer",
+          "x-nullable": false,
+        },
+        "name": Object {
+          "enum": Array [
+            "felix",
+            "fido",
+            "garfield",
+            "odie",
+            "rex",
+            "sylvester",
+          ],
+          "type": "string",
           "x-nullable": false,
         },
       },
@@ -191,10 +198,6 @@ Object {
           "info": Object {
             "$ref": "#/components/schemas/PetInfo",
           },
-          "name": Object {
-            "nullable": false,
-            "type": "string",
-          },
           "type": Object {
             "enum": Array [
               "cat",
@@ -206,7 +209,6 @@ Object {
           },
         },
         "required": Array [
-          "name",
           "type",
           "info",
         ],
@@ -221,6 +223,18 @@ Object {
           "lives": Object {
             "nullable": false,
             "type": "integer",
+          },
+          "name": Object {
+            "enum": Array [
+              "felix",
+              "fido",
+              "garfield",
+              "odie",
+              "rex",
+              "sylvester",
+            ],
+            "nullable": false,
+            "type": "string",
           },
         },
         "type": "object",

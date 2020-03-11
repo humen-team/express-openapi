@@ -1,12 +1,15 @@
 import {
+    concat,
     difference,
     flatten,
     intersection,
     isPlainObject,
     isUndefined,
     merge,
+    mergeWith,
     omit,
     pick,
+    sortedUniq,
     union,
 } from 'lodash';
 
@@ -162,14 +165,25 @@ export default class JSONSchemaResource extends Resource {
             resources = [],
         } = options;
 
+        function mergeEnums(objValue, sourceValue, key) {
+            // if both obj and source are enums
+            if (objValue && sourceValue && key === 'enum') {
+                // merge their values together
+                return sortedUniq(concat(objValue, sourceValue).sort());
+            }
+            // otherwise, fall back to the default merge
+            return undefined;
+        }
+
         return new JSONSchemaResource({
             additionalProperties,
             id,
             properties: resources.reduce(
-                (obj, resource) => ({
-                    ...obj,
-                    ...resource.properties,
-                }),
+                (obj, resource) => mergeWith(
+                    obj,
+                    resource.properties,
+                    mergeEnums,
+                ),
                 {},
             ),
             [exclusive ? 'oneOf' : 'anyOf']: resources.map(
