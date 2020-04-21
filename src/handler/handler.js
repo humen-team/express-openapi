@@ -25,7 +25,6 @@ function deepOmitUndefined(object) {
     return object;
 }
 
-
 /* Encapsulates executation of a route.
  */
 export default class Handler {
@@ -39,6 +38,7 @@ export default class Handler {
         output,
         route,
         statusCode,
+        validateIdentifier,
     }) {
         this.error = error;
         this.hasRequestBody = hasRequestBody;
@@ -49,6 +49,7 @@ export default class Handler {
         this.output = output;
         this.route = route;
         this.statusCode = statusCode;
+        this.validateIdentifier = validateIdentifier;
     }
 
     /* Define the request handling function.

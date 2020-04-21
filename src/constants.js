@@ -12,3 +12,5 @@ export const DEFAULT_PRODUCES = JSON_MIMETYPE;
 export const DEFAULT_SCHEME = 'http';
 export const DEFAULT_TITLE = 'REST API';
 export const DEFAULT_VERSION = '0.1.0';
+
+export const UUID_PATTERN = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;

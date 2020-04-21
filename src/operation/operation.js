@@ -1,7 +1,14 @@
 import { NO_CONTENT, OK } from 'http-status-codes';
 import { concat } from 'lodash';
 
-import { DEFAULT_CONSUMES, DEFAULT_PRODUCES, OPENAPI_2_0, OPENAPI_3_0_0 } from '../constants';
+import {
+    DEFAULT_CONSUMES,
+    DEFAULT_PRODUCES,
+    OPENAPI_2_0,
+    OPENAPI_3_0_0,
+    UUID_PATTERN,
+} from '../constants';
+import { UnprocessableEntity } from '../errors';
 import pickVersion from '../versions';
 import Parameter from './parameter';
 import Response from './response';
@@ -41,6 +48,7 @@ export default class Operation {
             route,
             statusCode,
             tags,
+            validateIdentifier,
         } = options;
         // all of these are defaultable or nullable
         this.consumes = consumes;
@@ -56,6 +64,7 @@ export default class Operation {
         this.requestHeaders = requestHeaders || {};
         this.statusCode = statusCode || OK;
         this.tags = tags;
+        this.validateIdentifier = validateIdentifier || this.constructor.defaultValidateIdentifier;
 
         if (!method) {
             throw new Error(`Operation ${this.operationId} must specify its 'method'`);
@@ -78,6 +87,17 @@ export default class Operation {
     register(app) {
         const handler = this.constructor.createHandler(this);
         app[this.method.toLowerCase()](this.path, ...this.middleware, handler.handle.bind(handler));
+
+        if (handler.identifierName && handler.validateIdentifier) {
+            app.param(handler.identifierName, (req, res, next, id) => {
+                if (!handler.validateIdentifier(id)) {
+                    return next(new UnprocessableEntity({
+                        message: `Malformed identifier: ${id}`,
+                    }));
+                }
+                return next();
+            });
+        }
     }
 
     /* Define the default operation id.
@@ -101,6 +121,10 @@ export default class Operation {
                 },
             },
         });
+    }
+
+    static defaultValidateIdentifier(id) {
+        return UUID_PATTERN.test(id);
     }
 
     static createHandler(operation) {

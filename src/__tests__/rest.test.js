@@ -48,11 +48,11 @@ describe('app', () => {
     describe('Retrieve', () => {
         it('returns 200', async () => {
             const app = createApp();
-            const response = await request(app).get('/foo/id');
+            const response = await request(app).get('/foo/81490838-694e-44a7-a9f4-92dedb9a6116');
             expect(response.statusCode).toEqual(200);
             expect(response.body).toEqual({
                 bar: 'baz',
-                id: 'id',
+                id: '81490838-694e-44a7-a9f4-92dedb9a6116',
             });
         });
     });
@@ -60,7 +60,7 @@ describe('app', () => {
     describe('Delete', () => {
         it('returns 200', async () => {
             const app = createApp();
-            const response = await request(app).delete('/foo/id');
+            const response = await request(app).delete('/foo/81490838-694e-44a7-a9f4-92dedb9a6116');
             expect(response.statusCode).toEqual(204);
         });
     });
@@ -68,13 +68,13 @@ describe('app', () => {
     describe('Replace', () => {
         it('returns 200', async () => {
             const app = createApp();
-            const response = await request(app).patch('/foo/id').send({
+            const response = await request(app).patch('/foo/81490838-694e-44a7-a9f4-92dedb9a6116').send({
                 bar: 'baz',
             });
             expect(response.statusCode).toEqual(200);
             expect(response.body).toEqual({
                 bar: 'baz',
-                id: 'id',
+                id: '81490838-694e-44a7-a9f4-92dedb9a6116',
             });
         });
     });
@@ -82,13 +82,13 @@ describe('app', () => {
     describe('Update', () => {
         it('returns 200', async () => {
             const app = createApp();
-            const response = await request(app).put('/foo/id').send({
+            const response = await request(app).put('/foo/81490838-694e-44a7-a9f4-92dedb9a6116').send({
                 bar: 'baz',
             });
             expect(response.statusCode).toEqual(200);
             expect(response.body).toEqual({
                 bar: 'baz',
-                id: 'id',
+                id: '81490838-694e-44a7-a9f4-92dedb9a6116',
             });
         });
     });

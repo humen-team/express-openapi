@@ -1,4 +1,7 @@
 import {
+    UUID_PATTERN,
+} from './constants';
+import {
     Accepted,
     Conflict,
     Forbidden,
@@ -62,6 +65,7 @@ export {
     Update,
     Unauthorized,
     UnprocessableEntity,
+    UUID_PATTERN,
     buildSpec,
     serveSpec,
 };
