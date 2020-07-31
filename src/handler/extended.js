@@ -4,13 +4,13 @@ import Handler from './handler';
  */
 export default class ExtendedHandler extends Handler {
 
-    async processOutput(input, req, res) {
+    async processOutput(input, req, res, metadata) {
         const { data, headers = {} } = input;
 
         Object.keys(headers).forEach(
             (name) => res.set(name, headers[name]),
         );
 
-        return super.processOutput(data, req, res);
+        return super.processOutput(data, req, res, metadata);
     }
 }

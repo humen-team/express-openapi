@@ -34,10 +34,12 @@ export default class Handler {
         hasResponseBody,
         identifierName,
         input,
-        logger,
+        operationId,
         output,
+        resourceName,
         route,
         statusCode,
+        telemetry,
         validateIdentifier,
     }) {
         this.error = error;
@@ -45,23 +47,34 @@ export default class Handler {
         this.hasResponseBody = hasResponseBody;
         this.identifierName = identifierName;
         this.input = input;
-        this.logger = logger;
+        this.operationId = operationId;
         this.output = output;
+        this.resourceName = resourceName;
         this.route = route;
         this.statusCode = statusCode;
+        this.telemetry = telemetry;
         this.validateIdentifier = validateIdentifier;
     }
 
     /* Define the request handling function.
      */
     async handle(req, res) {
+        const metadata = {
+            resourceName: this.resourceName,
+            operationId: this.operationId,
+        };
+
+        if (this.telemetry && this.telemetry.onHandle) {
+            await this.telemetry.onHandle(metadata, req, res);
+        }
+
         try {
             const input = await this.processInput(req, res);
             const output = await this.call(input, req, res);
-            const result = await this.processOutput(output, req, res);
+            const result = await this.processOutput(output, req, res, metadata);
             return result;
         } catch (error) {
-            const result = await this.processError(error, req, res);
+            const result = await this.processError(error, req, res, metadata);
             return result;
         }
     }
@@ -84,13 +97,19 @@ export default class Handler {
 
     /* Process, validate, and send response output.
      */
-    async processOutput(output, req, res) {
+    async processOutput(output, req, res, metadata) {
+        const status = this.statusCode;
+
+        if (this.telemetry && this.telemetry.onSuccess) {
+            await this.telemetry.onSuccess({ ...metadata, status }, req, res);
+        }
+
         if (!this.output || !this.hasResponseBody) {
-            return res.status(this.statusCode).send();
+            return res.status(status).send();
         }
 
         const resource = this.processOutputData(output);
-        return res.status(this.statusCode).send(resource);
+        return res.status(status).send(resource);
     }
 
     processOutputData(output) {
@@ -107,23 +126,13 @@ export default class Handler {
 
     /* Process, validate, and send response errors.
      */
-    async processError(error, req, res) {
+    async processError(error, req, res, metadata) {
         const status = this.processErrorStatus(error);
 
-        /* Request level errors are not automatically problematic; it's perfectly normal
-         * for APIs to return 4XX codes due to client errors or business logic constraints
-         * and these conditions should not automatically clutter logs.
-         *
-         * However, 500 errors are pretty much the definition of a mistake in the server
-         * and should be subsequently investigated (though not necessarily immediately).
-         *
-         * Hence, log these at `warn`, but not `error`.
-         */
-        if (this.logger && status === INTERNAL_SERVER_ERROR) {
-            const { method, originalUrl: url } = req;
-            // NB: use the winston 3.0 convention of passing the error object and metadata
-            this.logger.warn(error, { method, url });
+        if (this.telemetry && this.telemetry.onError) {
+            await this.telemetry.onError({ ...metadata, status }, req, res, error);
         }
+
         const resource = this.processErrorData(error);
         return res.status(status).send(resource);
     }
