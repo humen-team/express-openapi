@@ -36,7 +36,6 @@ export default class Operation {
             description,
             error,
             input,
-            logger,
             method,
             middleware,
             namingStrategy,
@@ -47,6 +46,7 @@ export default class Operation {
             requestHeaders,
             route,
             statusCode,
+            telemetry,
             tags,
             validateIdentifier,
         } = options;
@@ -57,12 +57,12 @@ export default class Operation {
         this.input = input;
         this.operationId = operationId || this.constructor.defaultOperationId;
         this.output = output;
-        this.logger = logger;
         this.middleware = middleware || [];
         this.namingStrategy = namingStrategy;
         this.produces = produces;
         this.requestHeaders = requestHeaders || {};
         this.statusCode = statusCode || OK;
+        this.telemetry = telemetry;
         this.tags = tags;
         this.validateIdentifier = validateIdentifier || this.constructor.defaultValidateIdentifier;
 
