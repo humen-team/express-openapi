@@ -21,6 +21,10 @@ describe('JSONSchemaResource', () => {
             string: {
                 type: 'string',
             },
+            uuid: {
+                type: 'string',
+                format: 'uuid',
+            },
         },
         required: [
             'nullableString',
@@ -64,6 +68,11 @@ describe('JSONSchemaResource', () => {
                         type: 'string',
                         'x-nullable': false,
                     },
+                    uuid: {
+                        format: 'uuid',
+                        type: 'string',
+                        'x-nullable': false,
+                    },
                 },
                 required: [
                     'nullableString',
@@ -91,6 +100,11 @@ describe('JSONSchemaResource', () => {
                     string: {
                         type: 'string',
                         nullable: false,
+                    },
+                    uuid: {
+                        format: 'uuid',
+                        nullable: false,
+                        type: 'string',
                     },
                 },
                 required: [
@@ -158,13 +172,28 @@ describe('JSONSchemaResource', () => {
     describe('validate()', () => {
         it('throws validation error for invalid data', () => {
             const data = {};
-            expect(() => resource.validate(data)).toThrow('requires property "nullableString"');
+            expect(() => resource.validate(data)).toThrow(
+                /requires property "nullableString"/,
+            );
+        });
+        it('throw validation error for custom format', () => {
+            const data = {
+                nullableString: 'bar',
+                uuid: 'foo',
+            };
+            expect(() => resource.validate(data)).toThrow(
+                /instance.uuid does not conform to the "uuid" format/,
+            );
         });
         it('does not throw error for valid data', () => {
             const data = {
                 nullableString: 'bar',
+                uuid: '00000000-0000-4000-9000-000000000000',
             };
-            expect(resource.validate(data)).toEqual({ nullableString: 'bar' });
+            expect(resource.validate(data)).toEqual({
+                nullableString: 'bar',
+                uuid: '00000000-0000-4000-9000-000000000000',
+            });
         });
     });
 });
