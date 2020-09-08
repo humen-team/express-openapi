@@ -1,7 +1,7 @@
 import { validate } from 'uuid';
 
 export function uuidFormat(input) {
-    return validate(input);
+    return input === null || validate(input);
 }
 
 export function userIdFormat(input) {
