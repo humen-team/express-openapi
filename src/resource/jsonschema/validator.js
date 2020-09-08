@@ -2,6 +2,7 @@ import { isPlainObject, mapValues } from 'lodash';
 import { Validator } from 'jsonschema';
 
 import Reference from '../reference';
+import { userIdFormat, uuidFormat } from './formats';
 
 /* Replace `Reference` instances in the schema with an concrete path.
  *
@@ -56,6 +57,9 @@ function dereference(object, validator, path = '') {
  */
 export default function createValidator(resource) {
     const validator = new Validator();
+
+    validator.customFormats.uuid = uuidFormat;
+    validator.customFormats['user-id'] = userIdFormat;
 
     const schema = dereference(resource.schema, validator);
     return {
