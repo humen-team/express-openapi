@@ -13,6 +13,7 @@ import Retrieve from './retrieve';
 import RetrieveFile from './retrieve_file';
 import Search from './search';
 import Update from './update';
+import UpdateMany from './update_many';
 
 export {
     Command,
@@ -30,4 +31,5 @@ export {
     RetrieveFile,
     Search,
     Update,
+    UpdateMany,
 };
