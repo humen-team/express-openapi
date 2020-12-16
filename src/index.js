@@ -27,6 +27,7 @@ import {
     Query,
     Search,
     Update,
+    UpdateMany,
 } from './operation';
 import { JSONSchemaResource } from './resource';
 import NamingStrategy from './naming';
@@ -63,6 +64,7 @@ export {
     Search,
     Server,
     Update,
+    UpdateMany,
     Unauthorized,
     UnprocessableEntity,
     UUID_PATTERN,

@@ -14,6 +14,7 @@ import Retrieve from './retrieve';
 import RetrieveFile from './retrieve_file';
 import Search from './search';
 import Update from './update';
+import UpdateMany from './update_many';
 
 /* A namespace is a collection of operations under the same resource.
  */
@@ -114,5 +115,9 @@ export default class Namespace {
 
     update(options) {
         return this.add(Update, options);
+    }
+
+    updateMany(options) {
+        return this.add(UpdateMany, options);
     }
 }
