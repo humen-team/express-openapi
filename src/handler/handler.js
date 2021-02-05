@@ -30,6 +30,7 @@ function deepOmitUndefined(object) {
 export default class Handler {
     constructor({
         error,
+        errorHandler,
         hasRequestBody,
         hasResponseBody,
         identifierName,
@@ -43,6 +44,7 @@ export default class Handler {
         validateIdentifier,
     }) {
         this.error = error;
+        this.errorHandler = errorHandler;
         this.hasRequestBody = hasRequestBody;
         this.hasResponseBody = hasResponseBody;
         this.identifierName = identifierName;
@@ -74,7 +76,8 @@ export default class Handler {
             const result = await this.processOutput(output, req, res, metadata);
             return result;
         } catch (error) {
-            const result = await this.processError(error, req, res, metadata);
+            const errorToUse = this.errorHandler(error);
+            const result = await this.processError(errorToUse, req, res, metadata);
             return result;
         }
     }

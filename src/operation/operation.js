@@ -35,6 +35,7 @@ export default class Operation {
             consumes,
             description,
             error,
+            errorHandler,
             input,
             method,
             middleware,
@@ -54,6 +55,7 @@ export default class Operation {
         this.consumes = consumes;
         this.description = description;
         this.error = error || this.constructor.defaultErrorResource;
+        this.errorHandler = errorHandler || this.constructor.defaultErrorHandler;
         this.input = input;
         this.operationId = operationId || this.constructor.defaultOperationId;
         this.output = output;
@@ -104,6 +106,10 @@ export default class Operation {
      */
     static get defaultOperationId() {
         return this.name.replace('Operation', '').toLowerCase();
+    }
+
+    static defaultErrorHandler(err) {
+        return err;
     }
 
     static get defaultErrorResource() {
