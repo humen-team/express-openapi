@@ -28,10 +28,6 @@ Object {
       ],
       "type": "object",
     },
-    "CountFoo": Object {
-      "properties": Object {},
-      "type": "object",
-    },
     "CreateFoo": Object {
       "properties": Object {
         "bar": Object {
@@ -583,10 +579,6 @@ Object {
         "required": Array [
           "response",
         ],
-        "type": "object",
-      },
-      "CountFoo": Object {
-        "properties": Object {},
         "type": "object",
       },
       "CreateFoo": Object {

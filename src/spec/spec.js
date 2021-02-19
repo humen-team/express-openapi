@@ -136,7 +136,7 @@ export default class Spec {
 
     listInputResources() {
         return this.operations.filter(
-            ({ input, method }) => !!input && method !== 'GET',
+            ({ input, method }) => !!input && !['GET', 'HEAD'].includes(method),
         ).map(
             ({ input }) => input,
         );
